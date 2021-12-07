@@ -31,8 +31,7 @@
             <nav class="footer-navbar">
                 <ul class="navbar-navbar">
                     <li>
-                        <a class="nav-link" href="contact.html">
-                            Nous contacter :
+                        <a class="nav-link" href="">
                         </a>
                     </li>
                     <li>
