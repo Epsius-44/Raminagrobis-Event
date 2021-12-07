@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 07 déc. 2021 à 13:07
+-- Généré le : mar. 07 déc. 2021 à 13:23
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.4.9
 
@@ -20,13 +20,13 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `ramina_db`
 --
+CREATE DATABASE IF NOT EXISTS `ramina_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `ramina_db`;
 
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `admin`
---
--- Création : mar. 07 déc. 2021 à 12:36
 --
 
 DROP TABLE IF EXISTS `admin`;
@@ -40,8 +40,6 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 -- Structure de la table `category`
 --
--- Création : mar. 07 déc. 2021 à 12:41
---
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
@@ -54,8 +52,6 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 --
 -- Structure de la table `form`
---
--- Création : mar. 07 déc. 2021 à 12:46
 --
 
 DROP TABLE IF EXISTS `form`;
@@ -78,8 +74,6 @@ CREATE TABLE IF NOT EXISTS `form` (
 --
 -- Structure de la table `form_category`
 --
--- Création : mar. 07 déc. 2021 à 13:02
---
 
 DROP TABLE IF EXISTS `form_category`;
 CREATE TABLE IF NOT EXISTS `form_category` (
@@ -93,8 +87,6 @@ CREATE TABLE IF NOT EXISTS `form_category` (
 
 --
 -- Structure de la table `form_data`
---
--- Création : mar. 07 déc. 2021 à 12:53
 --
 
 DROP TABLE IF EXISTS `form_data`;
@@ -123,8 +115,6 @@ CREATE TABLE IF NOT EXISTS `form_data` (
 --
 -- Structure de la table `organisation`
 --
--- Création : mar. 07 déc. 2021 à 12:39
---
 
 DROP TABLE IF EXISTS `organisation`;
 CREATE TABLE IF NOT EXISTS `organisation` (
@@ -137,8 +127,6 @@ CREATE TABLE IF NOT EXISTS `organisation` (
 
 --
 -- Structure de la table `user`
---
--- Création : mar. 07 déc. 2021 à 12:38
 --
 
 DROP TABLE IF EXISTS `user`;
