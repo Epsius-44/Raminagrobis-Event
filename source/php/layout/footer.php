@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="../../../assets/file/cgu.pdf" target="_blank">
+                        <a class="nav-link" href="./assets/file/cgu.pdf" target="_blank">
                             Conditions générales d'utilisation
                         </a>
                     </li>
