@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class="footer-copyright">
-        <div class="container">
+        <div class="container_footer">
                 <span>
                     <?php
                     if (date("Y")!=2021){
