@@ -1,7 +1,6 @@
 <?php
 $title = "Connexion à votre compte";
 include "../source/php/layout/header.php";
-include "../source/php/actions/database-connection.php";
 ?>
 <main>
     <section id="home-hero">
@@ -38,8 +37,6 @@ include "../source/php/actions/database-connection.php";
         </div>
     </section>
 </main>
-<!-- TODO remove br tag-->
-<br>
 <?php
 include "../source/php/layout/footer.php";
 ?>
