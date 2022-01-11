@@ -36,14 +36,14 @@ include "../source/php/actions/database-connection.php";
                         <td> <!-- option applicable au secteur enregistrés dans la base de donnée-->
                             <div class="modify">
                                 <span class="fas fa-edit"></span> <!-- apparition et disparition au clic ddu formulaire-->
-                                <form action="../source/php/actions/modify_name_sector.php">
+                                <form action="../source/php/actions/modify_name_sector.php" method="POST">
                                     <input type="text" placeholder="<?php echo $l["name"] ?>" autofocus required/>
                                     <input type="submit" value="Modifier"/>
                                 </form>
                             </div>
                             <div class="delete">
                                 <span class="fas fa-trash"></span><!-- apparition au clic de la poubelle-->
-                                <form action="../source/php/actions/delete_sector.php">
+                                <form action="../source/php/actions/delete_sector.php" method="POST">
                                     <input type="submit" value="Confirme"/>
                                 </form>
                                 <button>
@@ -62,7 +62,7 @@ include "../source/php/actions/database-connection.php";
                 <span>
                     Ajouter
                 </span>
-                <form action="">
+                <form action="../source/php/actions/insert_sector.php" method="POST">
                     <input type="text" placeholder="Secteur"/> <!-- nommage du secteur -->
                     <input type="submit" value="Créer"/>
                 </form>
