@@ -12,7 +12,7 @@ include "./source/php/layout/header.php";
         </div>
         <div class="container">
             <div class="container-form">
-                <form action="?" id="register" method="POST">
+                <form action="source/php/actions/create_form_data.php" id="register" method="POST">
                     <div class="inline-form">
                         <label for="civility-fild">🧑 Civilité</label>
                         <select name="civility-fild" id="civility-fild" required>
