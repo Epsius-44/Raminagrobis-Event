@@ -8,6 +8,9 @@
         echo "Connexion réussie";
     }
     catch (PDOException $e){
-        echo "Echec de connection : ".$e->getMessage();
+        die("
+        <h1>Site momentanément indisponible</h1>
+        <p>Une erreur de connexion à la base de donnée bloque le chargement du site web.</p>
+        ");
     }
 ?>
