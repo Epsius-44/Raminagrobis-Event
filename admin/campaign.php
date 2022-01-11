@@ -2,6 +2,7 @@
 $title = "Nouveau formulaire";
 include "../source/php/layout/header.php";
 ?>
+
 <main>
     <section id="home-hero">
         <div class="container">
