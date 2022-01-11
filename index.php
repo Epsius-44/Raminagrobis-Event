@@ -11,7 +11,7 @@ $today = date("Y-m-d");
 if ($result === false or $today <= $result['start_date'] or $today >= $result['end_date']) {
     die("
         <h1>Cet évènement n'existe pas !</h1>
-        <p>Merci de vérifier l'URL entrée.</p>
+        <p>Merci de vérifier l'URL entrée ainsi que la date de début et de fin des inscription à l'évènement.</p>
         ");
 }
 ?>
@@ -74,7 +74,7 @@ if ($result === false or $today <= $result['start_date'] or $today >= $result['e
                         <label for="sector-field" id="sector-label" hidden>🎯 Secteur</label>
                         <select name="sector-field" id="sector-field" hidden>
                             <option value="" selected disabled>Choisir un secteur d'activité</option>
-                            <option value="0">{NOM SECTEUR}</option>
+                            <option value="1">{NOM SECTEUR}</option>
                         </select>
                         <label for="compagny-field" id="compagny-label" hidden>🏭 Entreprise</label>
                         <input type="text"
