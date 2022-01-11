@@ -1,4 +1,6 @@
+<!--TODO sécurité-->
 <?php
+
 $title = "Nouveau formulaire";
 include "../source/php/layout/header.php";
 include "../source/php/actions/database-connection.php";
@@ -17,7 +19,8 @@ if ($campaign_id != null) {
     $result = $request->fetchAll();
     if (count($result) == 1) {
         $campaign_data = [$result[0]["organisation"],$result[0]["title"],$result[0]["description"],$result[0]["color_primary"],$result[0]["color_secondary"],$result[0]["start_date"],$result[0]["end_date"]];
-        var_dump($campaign_data);
+        }else{
+        header('location: ./campaign');
     }
 }
 
@@ -28,6 +31,7 @@ $color_primary = $campaign_data[3];
 $color_secondary = $campaign_data[4];
 $start_date = $campaign_data[5];
 $end_date = $campaign_data[6];
+
 
 ?>
 
@@ -66,7 +70,9 @@ $end_date = $campaign_data[6];
                                id="add_file"
                                name="add_file"
                                accept="image/png, image/jpeg"
-                               required>
+                               <?php if ($campaign_id == null){
+                                   echo "required";
+                               }?>>
                         <label for="color_primary">Couleur primaire</label>
                         <input type="color"
                                class="form-control"
@@ -84,13 +90,16 @@ $end_date = $campaign_data[6];
                                class="form-control"
                                id="start_date"
                                name="start_date"
+                               min="<?= $start_date ?>"
                                value="<?= $start_date ?>"
+                               onchange="minDate()"
                                required>
-                        <label for="end_date">date de fin du formulaire (à23h59)</label>
+                        <label for="end_date">date de fin du formulaire (à 23h59)</label>
                         <input type="date"
                                class="form-control"
                                id="end_date"
                                name="end_date"
+                               min="<?= $start_date ?>"
                                value="<?= $end_date ?>"
                                required>
 
@@ -105,7 +114,7 @@ $end_date = $campaign_data[6];
                             <?php
                         }
                         ?>
-                        <!--TODO Connexion à la base de donnée pour ajouter les catégories-->
+                        <input type="hidden" name="campaign_id" value="<?= $campaign_id ?>">
                         <input type="submit" value="OK">
                     </form>
                 </div>
@@ -117,7 +126,6 @@ $end_date = $campaign_data[6];
         document.getElementById("campaign").addEventListener("submit", function (e) {
             if (countCheckedPureJS() === 0) {
                 e.preventDefault();
-                console.log(countCheckedPureJS());
             }
         });
 
@@ -131,6 +139,11 @@ $end_date = $campaign_data[6];
                 }
             }
             return count;
+        }
+
+        function minDate() {
+            var element = document.getElementById("end_date");
+            element.setAttribute("min",document.getElementById("start_date").value)
         }
     </script>
 <?php
