@@ -1,5 +1,6 @@
 <?php
 include "database-connection.php";
+// FIXME ERROR ON CHECKBOX VALUE
 // TODO ADD SECURE TOKEN
 $civility = filter_input(INPUT_POST, "civility-fild");
 $firstname = filter_input(INPUT_POST, "firstname-field");

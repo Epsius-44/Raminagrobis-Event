@@ -1,14 +1,27 @@
 <?php
-$title = "Accueil";
+$form_id = filter_input(INPUT_GET, "id");
+$title = "Participation à un event";
 include "./source/php/layout/header.php";
+include "./source/php/actions/database-connection.php";
+$request = $conn->prepare("SELECT * FROM form WHERE id=:form_id");
+$request->bindParam(":form_id", $form_id);
+$request->execute();
+$result = $request->fetch();
+$today = date("Y-m-d");
+if ($result === false or $today <= $result['start_date'] or $today >= $result['end_date']) {
+    die("
+        <h1>Cet évènement n'existe pas !</h1>
+        <p>Merci de vérifier l'URL entrée.</p>
+        ");
+}
 ?>
 <main>
     <section id="home-hero">
         <div class="form-header">
-            <h1>🎫 {NOM DE L'EVENT}</h1>
-            <p>{DESCRIPTION}</p>
+            <h1>🎫 <?= $result['title'] ?></h1>
+            <p><?= $result['description'] ?></p>
             <hr>
-            <h2>🏭 {ENTREPRISE ORGANISATRICE}</h2>
+            <h2>🏭 <?= $result['organisation'] ?></h2>
         </div>
         <div class="container">
             <div class="container-form">
