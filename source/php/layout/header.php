@@ -11,4 +11,3 @@
     <title><?= $title ?></title>
 </head>
 <body>
-<?php include "./source/php/components/navbar.php" ?>
