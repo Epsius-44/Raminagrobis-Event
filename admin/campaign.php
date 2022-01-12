@@ -39,14 +39,14 @@ $end_date = $campaign_data[6];
         <section id="home-hero">
             <div class="container">
                 <div class="container-form">
-                    <form action="?" id="campaign" name="campaign" method="POST" enctype="multipart/form-data">
+                    <form action="../source/php/actions/add_modify_campaign.php" id="campaign" name="campaign" method="POST" enctype="multipart/form-data">
                         <label for="organization">nom de l'organisation</label>
                         <input type="text"
                                class="form-control"
                                id="organization"
                                name="organization"
                                value="<?= $organization ?>"
-                               maxlength="10"
+                               maxlength="31"
                                required>
                         <label for="event_name">nom de l'évenement</label>
                         <input type="text"
@@ -106,10 +106,11 @@ $end_date = $campaign_data[6];
                         <?php
                         foreach ($sector_lines as $l) {
                             ?>
+
                             <input type="checkbox"
                                    class="groupcheckbox"
                                    id="<?= $l['id'] ?>"
-                                   name="<?= $l['id'] ?>">
+                                   name="<?= "checkbox_sector_".$l['id'] ?>">
                             <label for="<?= $l['id'] ?>"><?= $l['name'] ?></label>
                             <?php
                         }
@@ -147,5 +148,4 @@ $end_date = $campaign_data[6];
         }
     </script>
 <?php
-include "../source/php/layout/footer.php";
 ?>
