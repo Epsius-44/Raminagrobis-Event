@@ -18,7 +18,6 @@ $request = $conn->prepare("SELECT sector.id, sector.name FROM form_sector JOIN s
 $request->bindParam(":form_id", $result['id']);
 $request->execute();
 $sector = $request->fetchAll();
-var_dump($sector);
 ?>
 <main>
     <section id="home-hero">
