@@ -8,12 +8,17 @@ $request->bindParam(":form_id", $form_id);
 $request->execute();
 $result = $request->fetch();
 $today = date("Y-m-d");
-if ($result === false or $today <= $result['start_date'] or $today >= $result['end_date']) {
+if ($result === false or $today <= $result['start_date'] or $today > $result['end_date']) {
     die("
         <h1>Cet évènement n'existe pas !</h1>
         <p>Merci de vérifier l'URL entrée ainsi que la date de début et de fin des inscription à l'évènement.</p>
         ");
 }
+$request = $conn->prepare("SELECT sector.id, sector.name FROM form_sector JOIN sector ON form_sector.id_sector = sector.id WHERE form_sector.id_form = :form_id");
+$request->bindParam(":form_id", $result['id']);
+$request->execute();
+$sector = $request->fetchAll();
+var_dump($sector);
 ?>
 <main>
     <section id="home-hero">
@@ -74,7 +79,13 @@ if ($result === false or $today <= $result['start_date'] or $today >= $result['e
                         <label for="sector-field" id="sector-label" hidden>🎯 Secteur</label>
                         <select name="sector-field" id="sector-field" hidden>
                             <option value="" selected disabled>Choisir un secteur d'activité</option>
-                            <option value="1">{NOM SECTEUR}</option>
+                            <?php
+                                foreach ($sector as $s){
+                                    ?>
+                                    <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
+                                    <?php
+                                }
+                            ?>
                         </select>
                         <label for="compagny-field" id="compagny-label" hidden>🏭 Entreprise</label>
                         <input type="text"
