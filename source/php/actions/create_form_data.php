@@ -1,6 +1,28 @@
 <?php
 include "database-connection.php";
-// FIXME ERROR ON CHECKBOX VALUE
+
+function checkboxValue($check){
+    if ($check != "") {
+        return 1;
+    }
+    return 0;
+}
+
+function isCompagny($value, $peopleType){
+    if ($peopleType === 1){
+        return $value;
+    }else{
+        return NULL;
+    }
+}
+
+function toInt($value, $peopleType){
+    $t = isCompagny($value, $peopleType);
+    if ($t != NULL){
+        return (int)$value;
+    }
+    return NULL;
+}
 // TODO ADD SECURE TOKEN
 $civility = filter_input(INPUT_POST, "civility-fild");
 $firstname = filter_input(INPUT_POST, "firstname-field");
@@ -8,12 +30,11 @@ $lastname = filter_input(INPUT_POST, "lastname-field");
 $email = filter_input(INPUT_POST, "email-field");
 $mobile = filter_input(INPUT_POST, "mobile-field");
 $fixe = filter_input(INPUT_POST, "fixe-field");
-$peopleType = filter_input(INPUT_POST, "peopleType-field");
-$sector = filter_input(INPUT_POST, "sector-field");
-$compagny = filter_input(INPUT_POST, "compagny-field");
+$peopleType = checkboxValue(filter_input(INPUT_POST, "peopleType-field"));
+$sector = toInt(filter_input(INPUT_POST, "sector-field"), $peopleType);
+$compagny = isCompagny(filter_input(INPUT_POST, "compagny-field"), $peopleType);
 $number = 1; // FIXME Add number field in form
-$rgdp = filter_input(INPUT_POST, "rgpd-field");
-$news = filter_input(INPUT_POST, "news-field");
+$news = checkboxValue(filter_input(INPUT_POST, "news-field"));
 $score = 3; //TODO ADD SCORE DEFINITION
 $id_form = 1; //TODO ADD FORM ID
 
@@ -33,4 +54,8 @@ $request->bindParam(":news", $news);
 $request->bindParam(":score", $score);
 $request->bindParam(":id_form", $id_form);
 $request->bindParam(":id_category", $sector);
-$request->execute();
+try{
+    $request->execute();
+}catch (PDOException $e){
+    var_dump($e);
+}
