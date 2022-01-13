@@ -58,16 +58,21 @@ include "../source/php/actions/database-connection.php";//connexion à la base d
                 }
                 ?>
 
+                <tr>
+                    <td>
+                        <div class="insert"> <!-- création d'un nouveau secteur dans la base de donnée-->
+                            <span>
+                                Ajouter
+                            </span>
+                            <form action="../source/php/actions/insert_sector.php" method="POST">
+                                <input type="text" name="name" placeholder="Secteur"/> <!-- nommage du secteur -->
+                                <input type="submit" value="Créer"/>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
             </table>
-            <div class="insert"> <!-- création d'un nouveau secteur dans la base de donnée-->
-                <span>
-                    Ajouter
-                </span>
-                <form action="../source/php/actions/insert_sector.php" method="POST">
-                    <input type="text" name="name" placeholder="Secteur"/> <!-- nommage du secteur -->
-                    <input type="submit" value="Créer"/>
-                </form>
-            </div>
         </div>
     </section>
 </main>
