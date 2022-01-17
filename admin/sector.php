@@ -1,7 +1,7 @@
 <?php
 $title = "Modification des catégories";
-include "../source/php/layout/header.php";
-include "../source/php/actions/database-connection.php";//connexion à la base de donnée
+include "../src/php/layout/headerAdmin.php";
+include "../src/php/actions/database-connection.php";//connexion à la base de donnée
 ?>
 
 <main>
@@ -35,7 +35,7 @@ include "../source/php/actions/database-connection.php";//connexion à la base d
                         <td> <!-- option applicable au secteur enregistrés dans la base de donnée-->
                             <div class="modify">
                                 <span class="fas fa-edit"></span> <!-- apparition et disparition au clic ddu formulaire-->
-                                <form action="../source/php/actions/modify_name_sector.php" method="POST">
+                                <form action="../src/actions/modify_name_sector.php" method="POST">
                                     <input type="text" name="new_name" placeholder="<?php echo $l["name"] ?>" autofocus required/>
                                     <input type="text" name="previous_name" value="<?php echo $l["name"] ?>" hidden/>
                                     <input type="submit" value="Modifier"/>
@@ -43,7 +43,7 @@ include "../source/php/actions/database-connection.php";//connexion à la base d
                             </div>
                             <div class="delete">
                                 <span class="fas fa-trash"></span><!-- apparition au clic de la poubelle-->
-                                <form action="../source/php/actions/delete_sector.php" method="POST">
+                                <form action="../src/actions/delete_sector.php" method="POST">
                                     <input type="text" name="name" value="<?php echo $l["name"] ?>" hidden/>
                                     <input type="submit" value="Confirme"/>
                                 </form>
@@ -63,7 +63,7 @@ include "../source/php/actions/database-connection.php";//connexion à la base d
                 <span>
                     Ajouter
                 </span>
-                <form action="../source/php/actions/insert_sector.php" method="POST">
+                <form action="../src/actions/insert_sector.php" method="POST">
                     <input type="text" name="name" placeholder="Secteur"/> <!-- nommage du secteur -->
                     <input type="submit" value="Créer"/>
                 </form>
@@ -75,5 +75,5 @@ include "../source/php/actions/database-connection.php";//connexion à la base d
     <!-- apparition et disparition -->
 </script>
 <?php
-include "../source/php/layout/footer.php";
+include "../src/php/layout/footer.php";
 ?>

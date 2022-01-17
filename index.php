@@ -1,8 +1,8 @@
 <?php
 $form_id = filter_input(INPUT_GET, "id");
 $title = "Participation à un event";
-include "./source/php/layout/header.php";
-include "./source/php/actions/database-connection.php";
+include "./src/layout/header.php";
+include "./src/actions/database-connection.php";
 $request = $conn->prepare("SELECT * FROM form WHERE id=:form_id");
 $request->bindParam(":form_id", $form_id);
 $request->execute();
@@ -29,7 +29,7 @@ $sector = $request->fetchAll();
         </div>
         <div class="container">
             <div class="container-form">
-                <form action="source/php/actions/create_form_data.php" id="register" method="POST">
+                <form action="src/actions/create_form_data.php" id="register" method="POST">
                     <div class="inline-form">
                         <label for="civility-fild">🧑 Civilité</label>
                         <select name="civility-fild" id="civility-fild" required>
@@ -137,5 +137,5 @@ $sector = $request->fetchAll();
     }
 </script>
 <?php
-include "./source/php/layout/footer.php";
+include "./src/layout/footer.php";
 ?>

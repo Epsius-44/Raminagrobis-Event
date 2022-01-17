@@ -2,8 +2,8 @@
 <?php
 
 $title = "Nouveau formulaire";
-include "../source/php/layout/header.php";
-include "../source/php/actions/database-connection.php";
+include "../src/php/layout/headerAdmin.php";
+include "../src/php/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
 
 $request = $conn->prepare("select * from sector order by name");
@@ -39,7 +39,7 @@ $end_date = $campaign_data[6];
         <section id="home-hero">
             <div class="container">
                 <div class="container-form">
-                    <form action="../source/php/actions/add_modify_campaign.php" id="campaign" name="campaign" method="POST" enctype="multipart/form-data">
+                    <form action="../src/actions/add_modify_campaign.php" id="campaign" name="campaign" method="POST" enctype="multipart/form-data">
                         <label for="organization">nom de l'organisation</label>
                         <input type="text"
                                class="form-control"

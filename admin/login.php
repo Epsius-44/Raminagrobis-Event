@@ -1,6 +1,6 @@
 <?php
 $title = "Connexion à votre compte";
-include "../source/php/layout/header.php";
+include "../src/php/layout/headerAdmin.php";
 ?>
 <main>
     <section id="home-hero">
@@ -38,5 +38,5 @@ include "../source/php/layout/header.php";
     </section>
 </main>
 <?php
-include "../source/php/layout/footer.php";
+include "../src/php/layout/footer.php";
 ?>
