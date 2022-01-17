@@ -1,7 +1,7 @@
 <?php
 $title = "Modification des catégories";
-include "../src/php/layout/headerAdmin.php";
-include "../src/php/actions/database-connection.php";//connexion à la base de donnée
+include "../src/layout/headerAdmin.php";
+include "../src/actions/database-connection.php";//connexion à la base de donnée
 ?>
 
 <main>
@@ -75,5 +75,5 @@ include "../src/php/actions/database-connection.php";//connexion à la base de d
     <!-- apparition et disparition -->
 </script>
 <?php
-include "../src/php/layout/footer.php";
+include "../src/layout/footer.php";
 ?>

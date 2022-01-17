@@ -2,8 +2,8 @@
 <?php
 
 $title = "Nouveau formulaire";
-include "../src/php/layout/headerAdmin.php";
-include "../src/php/actions/database-connection.php";
+include "../src/layout/headerAdmin.php";
+include "../src/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
 
 $request = $conn->prepare("select * from sector order by name");
@@ -148,4 +148,5 @@ $end_date = $campaign_data[6];
         }
     </script>
 <?php
+include "../src/layout/footer.php";
 ?>
