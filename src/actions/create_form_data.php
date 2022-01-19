@@ -1,5 +1,6 @@
 <?php
-include "database-connection.php";
+include_once "../config.php";
+include_once "database-connection.php";
 
 function checkboxValue($check){
     if ($check != "") {

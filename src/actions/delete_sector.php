@@ -1,6 +1,7 @@
 <?php
 //connection à la base de donnée
-include "database-connection.php";
+include_once "../config.php";
+include_once "database-connection.php";
 
 //réccupération du nouveau nom du secteur
 $name=filter_input(INPUT_POST, "name");

@@ -1,29 +1,28 @@
 <?php
 $title = "Modification des catégories";
 include "../src/layout/headerAdmin.php";
-include "../src/actions/database-connection.php";//connexion à la base de donnée
+include_once "../src/config.php";
+include_once "../src/actions/database-connection.php";
+// Listing des secteurs déjà enregistrés dans la base de donnée
+$lignes = sqlCommand("SELECT * FROM sector", [], $conn);
 ?>
 
 <main>
     <section>
         <div class="container">
             <h1>Gestion des secteurs</h1>
-            <?php
-            $requete=$conn->prepare("SELECT * FROM sector");//creation de la requete
-            $requete->execute();//executer la requete
-            $lignes=$requete->fetchAll();//réccupérer le résultat sous forme d'un tableau
-            ?>
-
-            <!-- Listing des secteurs déjà enregistrés dans la base de donnée -->
             <table class="table table-striped">
-                <tr> <!-- nom des colonnes -->
-                    <th>
-                        Nom
-                    </th>
-                    <th>
-                        Action
-                    </th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
                 <?php
                 // création du tableau en fonction du nombre de secteurs enregistrés dans la base de donnée
                 foreach($lignes as $l){
@@ -53,11 +52,10 @@ include "../src/actions/database-connection.php";//connexion à la base de donn�
                             </div>
                         </td>
                     </tr>
-
                     <?php
                 }
                 ?>
-
+                </tbody>
             </table>
             <div class="insert"> <!-- création d'un nouveau secteur dans la base de donnée-->
                 <span>

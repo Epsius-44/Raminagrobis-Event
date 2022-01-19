@@ -1,5 +1,6 @@
 <?php
-include "database-connection.php";
+include_once "../config.php";
+include_once "database-connection.php";
 $organization = filter_input(INPUT_POST, "organization");
 $event_name = filter_input(INPUT_POST, "event_name");
 $description = filter_input(INPUT_POST, "description");

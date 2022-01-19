@@ -2,22 +2,21 @@
 $form_id = filter_input(INPUT_GET, "id");
 $title = "Participation à un event";
 include "./src/layout/header.php";
-include "./src/actions/database-connection.php";
-$request = $conn->prepare("SELECT * FROM form WHERE id=:form_id");
-$request->bindParam(":form_id", $form_id);
-$request->execute();
-$result = $request->fetch();
+include_once "./src/config.php";
+include_once "./src/actions/database-connection.php";
+$result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn)[0];
 $today = date("Y-m-d");
 if ($result === false or $today <= $result['start_date'] or $today > $result['end_date']) {
     die("
-        <h1>Cet évènement n'existe pas !</h1>
-        <p>Merci de vérifier l'URL entrée ainsi que la date de début et de fin des inscription à l'évènement.</p>
+        <main>
+            <div class='container'>
+                <h1>Cet évènement n'existe pas !</h1>
+                <p>Merci de vérifier l'URL entrée ainsi que la date de début et de fin des inscriptions à l'évènement.</p>
+            </div>
+        </main>
         ");
 }
-$request = $conn->prepare("SELECT sector.id, sector.name FROM form_sector JOIN sector ON form_sector.id_sector = sector.id WHERE form_sector.id_form = :form_id");
-$request->bindParam(":form_id", $result['id']);
-$request->execute();
-$sector = $request->fetchAll();
+$sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector ON form_sector.id_sector = sector.id WHERE form_sector.id_form = :form_id", [":form_id" => $form_id], $conn);
 ?>
 <main>
     <section id="home-hero">
