@@ -4,9 +4,9 @@ $title = "Participation à un event";
 include "./src/layout/header.php";
 include_once "./src/config.php";
 include_once "./src/actions/database-connection.php";
-$result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn)[0];
+$result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn);
 $today = date("Y-m-d");
-if ($result === false or $today <= $result['start_date'] or $today > $result['end_date']) {
+if (empty($result) or $today <= $result[0]['start_date'] or $today > $result[0]['end_date']) {
     die("
         <main>
             <div class='container'>
@@ -16,6 +16,7 @@ if ($result === false or $today <= $result['start_date'] or $today > $result['en
         </main>
         ");
 }
+$result = $result[0];
 $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector ON form_sector.id_sector = sector.id WHERE form_sector.id_form = :form_id", [":form_id" => $form_id], $conn);
 ?>
 <main>
