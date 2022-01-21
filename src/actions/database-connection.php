@@ -16,7 +16,8 @@ try {
 function sqlCommand($cmd, $args, $sql)
 {
     $request = $sql->prepare($cmd);
-    foreach ($args as $key => $value) {
+    foreach ($args as $key => &$value) {
+        var_dump($key, $value);
         $request->bindParam($key, $value);
     }
     $request->execute();
