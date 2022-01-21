@@ -21,3 +21,18 @@ function getPost($args){
     }
     return $result;
 }
+
+function moveFile($file_name_post, $destinationPath, $newName, $authorized_type = ["*"]){
+    if (checkFile($file_name_post,$authorized_type) == true){
+        $extension = pathinfo(basename($_FILES[$file_name_post]["name"]), PATHINFO_EXTENSION);
+        $destination = $destinationPath.$newName.".".$extension;
+        move_uploaded_file($_FILES[$file_name_post]["tmp_name"],$destination);
+        return $destination;
+    }else{
+        return null;
+    }
+}
+
+function checkFile($file_name_post, $authorized_type = ["*"]){
+    return ($_FILES[$file_name_post]["error"] == 0 and ($authorized_type == ["*"] or in_array($_FILES[$file_name_post]["type"],$authorized_type)));
+}

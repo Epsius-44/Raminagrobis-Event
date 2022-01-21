@@ -6,9 +6,26 @@ include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
 $sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn);
-$campaign_data = ["", "", "", "FFFFFF", "FFFFFF", date("Y-m-d"), date("Y-m-d")];
-if ($campaign_id != null) {
-    $campaign_data = sqlCommand("SELECT * FROM form WHERE id = :campaign_id", [":campaign_id" => $campaign_id], $conn)[0];
+if (isset($campaign_id)==true){
+    $data = sqlCommand("SELECT * FROM form WHERE id = :campaign_id", [":campaign_id" => $campaign_id], $conn);
+    if (count($data)==0){
+       header("Location: ./campaign.php");
+    }
+    $campaign_data = $data[0];
+    $sectorSelect = sqlCommand("SELECT id_sector FROM form_sector WHERE id_form = :campaign_id", [":campaign_id" => $campaign_id], $conn );
+    $sector_checked = [];
+    foreach($sectorSelect as $sector){
+        $sector_checked[] = $sector[0];
+    }
+}else{
+    $sector_checked = [];
+    $campaign_data['organisation'] = "";
+    $campaign_data['title'] = "";
+    $campaign_data['description'] = "";
+    $campaign_data['color_primary'] = "000000";
+    $campaign_data['color_secondary'] = "000000";
+    $campaign_data['start_date'] = date("Y-m-d");
+    $campaign_data['end_date'] = date("Y-m-d");;
 }
 ?>
 
@@ -46,7 +63,7 @@ if ($campaign_id != null) {
                                class="form-control"
                                id="add_file"
                                name="add_file"
-                               accept="image/png, image/jpeg"
+                               accept=".png, .jpg, .jpeg"
                                <?php if ($campaign_id == null){
                                    echo "required";
                                }?>>
@@ -83,14 +100,16 @@ if ($campaign_id != null) {
                         foreach ($sector_lines as $l) {
                             ?>
                             <input type="checkbox"
-                                   class="groupcheckbox"
+                                   class="group-checkbox"
                                    id="<?php echo $l['id']; ?>"
-                                   name="<?php echo "checkbox_sector_".$l['id']; ?>">
+                                   name="<?php echo "checkbox_sector_".$l['id']; ?>"
+                            <?php echo in_array($l['id'],$sector_checked) ? "checked>" : ">"?>
                             <label for="<?php echo $l['id']; ?>"><?php echo $l['name']; ?></label>
                             <?php
                         }
                         ?>
                         <input type="hidden" name="campaign_id" value="<?php echo $campaign_id; ?>">
+                        <p class="visually-hidden text-danger" id="text-checkbox">Vous devez sélectionner au moins un secteur d'activité</p>
                         <input type="submit" value="OK">
                     </form>
                 </div>
@@ -102,11 +121,12 @@ if ($campaign_id != null) {
         document.getElementById("campaign").addEventListener("submit", function (e) {
             if (countCheckedPureJS() === 0) {
                 e.preventDefault();
+                document.getElementById("text-checkbox").className = "text-danger";
             }
         });
 
         function countCheckedPureJS() {
-            var elements = document.getElementsByClassName("groupcheckbox"),
+            var elements = document.getElementsByClassName("group-checkbox"),
                 i,
                 count = 0;
             for (i = 0; i < elements.length; i++) {
