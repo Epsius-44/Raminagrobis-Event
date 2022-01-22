@@ -1,6 +1,6 @@
 <?php
 
-function checkLenSting($valueCheck, $length_max, $length_min = 1)
+function checkLenString($valueCheck, $length_max, $length_min = 1)
 {
     return strlen($valueCheck) <= $length_max && strlen($valueCheck) >= $length_min;
 }
@@ -27,13 +27,14 @@ function moveFile($file_name_post, $destinationPath, $newName, $authorized_type 
         $extension = pathinfo(basename($_FILES[$file_name_post]["name"]), PATHINFO_EXTENSION);
         $destination = $destinationPath.$newName.".".$extension;
         move_uploaded_file($_FILES[$file_name_post]["tmp_name"],$destination);
-        var_dump($destination);
         return ($newName.".".$extension);
     }else{
         return null;
     }
 }
 
+
 function checkFile($file_name_post, $authorized_type = ["*"]){
+    var_dump($_FILES[$file_name_post]["error"]);
     return ($_FILES[$file_name_post]["error"] == 0 and ($authorized_type == ["*"] or in_array($_FILES[$file_name_post]["type"],$authorized_type)));
 }

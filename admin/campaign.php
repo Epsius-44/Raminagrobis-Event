@@ -60,7 +60,7 @@ include "../src/layout/headerAdmin.php";
                                value="<?php echo $campaign_data['description']; ?>"
                                maxlength="65535"
                                required>
-                        <label for="add_file">bannière</label>
+                        <label for="add_file">bannière (taille max: 2Mo)</label>
                         <input type="file"
                                class="form-control"
                                id="add_file"
@@ -69,6 +69,7 @@ include "../src/layout/headerAdmin.php";
                                <?php if ($campaign_id == null){
                                    echo "required";
                                }?>>
+                        <p class="visually-hidden text-danger" id="text-file">Le fichier sélectionner a une taille supérieur à 2Mo</p>
                         <label for="color_primary">Couleur primaire</label>
                         <input type="color"
                                class="form-control"
@@ -126,6 +127,17 @@ include "../src/layout/headerAdmin.php";
                 document.getElementById("text-checkbox").className = "text-danger";
             }
         });
+
+        var uploadField = document.getElementById("add_file");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 2097152){
+                document.getElementById("text-file").className = "text-danger";
+                this.value = "";
+            }else{
+                document.getElementById("text-file").className = "visually-hidden text-danger";
+            };
+        };
 
         function countCheckedPureJS() {
             var elements = document.getElementsByClassName("group-checkbox"),
