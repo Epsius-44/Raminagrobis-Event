@@ -43,10 +43,6 @@ function checkId($id,$conn)
 $newCampaign = $data_post["campaign_id"] == null;
 $imagePost = $_FILES['add_file']['error'] != 4;
 $checkFileResult = checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]);
-var_dump($newCampaign);
-var_dump($imagePost);
-var_dump($checkFileResult);
-var_dump((($checkFileResult == true && $newCampaign == true) || ($checkFileResult == true && $imagePost == true) || ($imagePost == false && $newCampaign == false)));
 
 
 //FIXME checkfile quand aucun fichier select pour modifier une campagne

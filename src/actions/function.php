@@ -35,6 +35,5 @@ function moveFile($file_name_post, $destinationPath, $newName, $authorized_type 
 
 
 function checkFile($file_name_post, $authorized_type = ["*"]){
-    var_dump($_FILES[$file_name_post]["error"]);
     return ($_FILES[$file_name_post]["error"] == 0 and ($authorized_type == ["*"] or in_array($_FILES[$file_name_post]["type"],$authorized_type)));
 }
