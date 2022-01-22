@@ -1,7 +1,5 @@
 <!--TODO sécurité-->
 <?php
-$title = "Nouveau formulaire";
-include "../src/layout/headerAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
@@ -17,7 +15,9 @@ if (isset($campaign_id)==true){
     foreach($sectorSelect as $sector){
         $sector_checked[] = $sector[0];
     }
+    $title = "Modification formulaire";
 }else{
+    $title = "Nouveau formulaire";
     $sector_checked = [];
     $campaign_data['organisation'] = "";
     $campaign_data['title'] = "";
@@ -27,6 +27,8 @@ if (isset($campaign_id)==true){
     $campaign_data['start_date'] = date("Y-m-d");
     $campaign_data['end_date'] = date("Y-m-d");;
 }
+include "../src/layout/headerAdmin.php";
+
 ?>
 
     <main>

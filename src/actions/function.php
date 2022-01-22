@@ -27,7 +27,8 @@ function moveFile($file_name_post, $destinationPath, $newName, $authorized_type 
         $extension = pathinfo(basename($_FILES[$file_name_post]["name"]), PATHINFO_EXTENSION);
         $destination = $destinationPath.$newName.".".$extension;
         move_uploaded_file($_FILES[$file_name_post]["tmp_name"],$destination);
-        return $destination;
+        var_dump($destination);
+        return ($newName.".".$extension);
     }else{
         return null;
     }

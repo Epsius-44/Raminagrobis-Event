@@ -34,12 +34,12 @@ function checkSector($list_sector_check, $list_sector)
 }
 function checkId($id,$conn)
 {
-    if ($id == null or sqlCommand("SELECT count(*) FROM form WHERE id=:id", [":id" => $id],$conn)[0][0] == 0) {
+    var_dump($id);
+    if ($id == null or sqlCommand("SELECT count(*) FROM form WHERE id=:id", [":id" => $id],$conn)[0][0] == 1) {
         return true;
     }
     return false;
 }
-
 
 //FIXME checkfile quand aucun fichier select pour modifier une campagne
 if (checkLenSting($data_post["organization"], 31) && checkLenSting($data_post["event_name"], 255)
@@ -48,7 +48,7 @@ if (checkLenSting($data_post["organization"], 31) && checkLenSting($data_post["e
     && checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]) && checkSector($sector, $sector_id) && checkId($data_post["campaign_id"],$conn)) {
 
     $directoryDestination = "../../assets/img/";
-    $newName = date("Y-m-d-H-i") . "-" . $data_post["organization"] . "-" . $data_post["event_name"];
+    $newName = date("Y-m-d-H-i-s") . "-" . $data_post["organization"] . "-" . $data_post["event_name"];
     $name = moveFile("add_file", $directoryDestination, $newName, ["image/png", "image/jpg", "image/jpeg"]);
 
     if ($data_post["campaign_id"] == null) {
@@ -65,15 +65,16 @@ if (checkLenSting($data_post["organization"], 31) && checkLenSting($data_post["e
             sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $campaign_id, ":id_sector" => $s], $conn);
         }
     } else {
+        $image = sqlCommand("SELECT image FROM form WHERE id=:campaign_id", ["campaign_id" => $data_post["campaign_id"]], $conn)[0]["image"];
+
         sqlCommand("UPDATE form SET title = :title, description = :description, image = :image,
                     color_primary = :color_primary, color_secondary = :color_secondary,
-                    start_date = :start_date, end_date = :end_date, organisation = :organinzation WHERE id = :campaign_id",
-            [":title" => $data_post["event_name"], "description" => $data_post["description"], ":image" => $newName,
+                    start_date = :start_date, end_date = :end_date, organisation = :organization WHERE id = :campaign_id",
+            [":title" => $data_post["event_name"], "description" => $data_post["description"], ":image" => $name,
                 ":color_primary" => $data_post["color_primary"], ":color_secondary" => $data_post["color_secondary"], ":start_date" => $data_post["start_date"],
-                ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"], ":campaign" => $data_post["campaign_id"]], $conn);
+                ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"], ":campaign_id" => $data_post["campaign_id"]], $conn);
 
         $request_sector_form_db = sqlCommand("SELECT id_sector FROM form_sector WHERE id_form=:id_form", [":id_form" => $data_post["campaign_id"]], $conn);
-        $image = sqlCommand("SELECT image FROM form WHERE id=:campaign_id", ["campaign_id" => $data_post["campaign_id"]], $conn);
         unlink("../../assets/img/" . $image);
 
         $sector_form_id = [];
@@ -97,6 +98,5 @@ if (checkLenSting($data_post["organization"], 31) && checkLenSting($data_post["e
             }
         }
     }
-    var_dump("test");
     echo "Succès de la requête";
 }
