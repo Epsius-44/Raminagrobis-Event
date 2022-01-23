@@ -1,7 +1,8 @@
 <?php
+include_once "check_security_token.php";
 include_once "../config.php";
-include_once "./database-connection.php";
-include_once "./function.php";
+include_once "database-connection.php";
+include_once "function.php";
 
 
 $data_post = getPost(["organization", "event_name", "description", "color_primary", "color_secondary", "start_date", "end_date", "campaign_id"]);

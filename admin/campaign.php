@@ -1,5 +1,5 @@
-<!--TODO sécurité-->
 <?php
+include_once "../src/actions/security_token.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
@@ -152,8 +152,8 @@ include "../src/layout/headerAdmin.php";
                         ?>
                     </fieldset>
                     <div class="invalid-feedback">Vous devez sélectionner au moins un secteur d'activité</div>
-                    <input type="hidden" name="campaign_id" value="<?php echo $campaign_id; ?>">
-
+                    <input type="hidden" name="campaign_id" value="<?= $campaign_id ?>">
+                    <input type="hidden" name="token" value="<?= $token ?>">
                     <div class="mt-5">
                         <input class="btn btn-outline-primary px-4" type="submit" value="Valider">
                     </div>
