@@ -8,4 +8,4 @@ $name=filter_input(INPUT_POST, "name");
 
 $requete=$conn->prepare("DELETE FROM `sector` WHERE name='{$name}'"); //creation de la requête
 $requete->execute(); //execution de la requête
-header("location: ../../../admin/sector");//retour à la page
+header("location: ../../admin/sector");//retour à la page
