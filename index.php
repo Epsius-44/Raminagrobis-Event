@@ -6,7 +6,7 @@ include_once "./src/config.php";
 include_once "./src/actions/database-connection.php";
 $result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn);
 $today = date("Y-m-d");
-if (empty($result) or $today <= $result[0]['start_date'] or $today > $result[0]['end_date']) {
+if (empty($result) or $today < $result[0]['start_date'] or $today > $result[0]['end_date']) {
     die("
         <main>
             <div class='container'>

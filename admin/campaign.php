@@ -130,7 +130,7 @@ include "../src/layout/headerAdmin.php";
                         $item = 6;
                         echo "<div class='col-12 btn-group-vertical'>";
                         for ($y = 0; $y <= intdiv(count($sector_lines), $item); $y++) {
-                            echo "<div class='btn-group'>";
+                            echo "<div class='btn-group flex-wrap'>";
                             $nbr_x = (count($sector_lines) - $y * $item >= $item) ? $item : count($sector_lines) - $y * $item;
                             for ($x = 1; $x <= $nbr_x; $x++) {
                                 $value = $sector_lines[($x - 1) + $y * $item]["id"];
@@ -143,7 +143,7 @@ include "../src/layout/headerAdmin.php";
                                         name='$name'
                                         onchange='checkbox_count(this)'
                                         $checked>
-                                        <label class='btn btn-outline-success col-md-2 py-3' for='$value' id='label_$value'>$sector_name</label>
+                                        <label class='btn btn-outline-success col-md-2 py-3 overflow-hidden rounded-0' for='$value' id='label_$value'>$sector_name</label>
                                       ";
                             }
                             echo "</div>";
@@ -258,8 +258,6 @@ include "../src/layout/headerAdmin.php";
                 }, false)
             })
     })()
-
-
 
 </script>
 <?php
