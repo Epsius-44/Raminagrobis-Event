@@ -23,7 +23,7 @@ if (isset($navbar)==false){
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,17 +38,18 @@ if (isset($navbar)==false){
                     <a class="nav-link active" href="./campaign.php">Créer une campagne</a>
                 </li>
             </ul>
+            <div class="d-flex"></div>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <!-- TODO enelever le texte "test" et remettre la fonction php quand l'utilisateur devra forcément être connecté pour accéder aux pages admin-->
+                        <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span> test<?php //echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></p>
+                    </li>
+                    <li class="nav-item mt-2">
+                        <a class="btn btn-primary" aria-current="page" href="../src/actions/logout.php"><p class="my-auto"><span class="fas fa-sign-out-alt"></span> Se déconnecter</p></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <!-- TODO enelever le texte "test" et remettre la fonction php quand l'utilisateur devra forcément être connecté pour accéder aux pages admin-->
-                    <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span> test<?php //echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></p>
-                </li>
-                <li class="nav-item mt-2">
-                    <a class="btn btn-primary" aria-current="page" href="../src/actions/logout.php"><p class="my-auto"><span class="fas fa-sign-out-alt"></span> Se déconnecter</p></a>
-                </li>
-            </ul>
-    </div>
+
 </nav>
 <?php }?>
