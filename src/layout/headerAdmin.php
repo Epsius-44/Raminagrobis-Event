@@ -50,6 +50,6 @@ if (isset($navbar)==false){
                 </ul>
             </div>
         </div>
-
 </nav>
+<main>
 <?php }?>

@@ -4,12 +4,10 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("
-        <main>
             <div class='container'>
                 <h1>Site momentanément indisponible</h1>
                 <p>Une erreur de connexion à la base de donnée bloque le chargement du site web.</p>
             </div>
-        </main>
         ");
 }
 

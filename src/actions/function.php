@@ -37,3 +37,14 @@ function moveFile($file_name_post, $destinationPath, $newName, $authorized_type 
 function checkFile($file_name_post, $authorized_type = ["*"]){
     return ($_FILES[$file_name_post]["error"] == 0 and ($authorized_type == ["*"] or in_array($_FILES[$file_name_post]["type"],$authorized_type)));
 }
+
+function nbDays($start_date, $end_date) {
+
+    $start = explode("-", $start_date);
+    $end = explode("-", $end_date);
+
+    $diff = mktime(0, 0, 0, $end[1], $end[2], $end[0]) -
+        mktime(0, 0, 0, $start[1], $start[2], $start[0]);
+
+    return(($diff / 86400));
+}

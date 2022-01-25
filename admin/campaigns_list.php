@@ -1,7 +1,11 @@
 <?php
+$title = "Liste des campagnes";
 include_once "../src/layout/headerAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
+include_once "../src/actions/function.php";
+
+
 
 $search = filter_input(INPUT_GET, 'search');
 if (isset($search)) {
@@ -51,7 +55,8 @@ $today = date("Y-m-d");
         </tr>
         <?php
         }else{
-            foreach ($campaigns_list as $data) { ?>
+            foreach ($campaigns_list as $data) {
+                ?>
             <tr>
                 <th scope="row"><?= $data["id"] ?></th>
                 <td class="table-list"><?= $data["title"] ?></td>
@@ -59,15 +64,15 @@ $today = date("Y-m-d");
                 <td class="table-list"><?= $data["description"] ?></td>
                 <td><?= $data["start_date"] ?></td>
                 <td><?= $data["end_date"] ?></td>
-                <td class="table-list"><?php if ($today >= $data['start_date'] and $today <= $data['end_date']) {
+                <td ><?php if ($today >= $data['start_date'] and $today <= $data['end_date']) {
                         echo "<span class='text-success'>En cours</span>";
                     }else if($today < $data['start_date']){
-                        echo "<span class='text-danger'>Pas commencé</span>";
+                        echo "<span class='text-warning'>Commence dans ".nbDays($today,$data['start_date'])." jours</span>";
                     }else{
                         echo "<span class='text-danger'>Terminé</span>";
                     }?></td>
                 <td><a href="./campaign.php?id=<?= $data["id"] ?>" class="btn btn-danger"><span class="far fa-edit"></span></a></td>
-                <td><a href="#" class="btn btn-primary"><span class="fad fa-database"></span></a></td>
+                <td><a href="./campaign_data.php?id=<?= $data["id"] ?>" class="btn btn-primary"><span class="fad fa-database"></span></a></td>
             </tr>
         <?php }} ?>
         </tbody>

@@ -9,6 +9,7 @@ $user = sqlCommand("SELECT login FROM user WHERE (login = :username OR email=:us
 if (count($user)==1){
     $_SESSION["username"] = $user[0]["login"];
     $_SESSION["user_connect"] = true;
+    header("location: ../../admin/campaigns_list.php");
 } else {
     $_SESSION["connection_error"] = "Identifiant ou mot de passe incorect";
     header("location: ../../admin/login.php");
