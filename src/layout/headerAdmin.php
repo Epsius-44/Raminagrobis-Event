@@ -22,7 +22,7 @@ if (isset($navbar)==false){
 <?php if ($navbar){ ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <img src="../assets/img/logo-raminagrobis.png" alt="" height="40px" class="me-5">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
         </button>

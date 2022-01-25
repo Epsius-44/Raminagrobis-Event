@@ -10,9 +10,12 @@ if (isset($id)) {
     if ($exist != 1) {
         echo "<div class='container'><h1>Cette campagne n'existe pas</h1><br><a href='campaigns_list.php' class='btn btn-primary'>Liste des campagnes</a></div>";
     }else{
-    $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id", [":id" => $id], $conn); ?>
+    $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id", [":id" => $id], $conn);
+    $file = $id."-".sqlCommand("SELECT title FROM form WHERE id=:id",[":id"=>$id],$conn)[0]["title"].".csv";
+    ?>
     <div class="container">
-    <table class="table table-striped">
+        <a href="../data_csv/<?= $file ?>" class="btn btn-success mb-4"><span class="fad fa-download"></span>  Télécharger les données</a>
+        <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Genre</th>

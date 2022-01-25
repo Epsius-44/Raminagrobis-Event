@@ -72,6 +72,11 @@ if (checkLenString($data_post["organization"], 31) && checkLenString($data_post[
         foreach ($sector as $s) {
             sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $campaign_id, ":id_sector" => $s], $conn);
         }
+        $fileName = "../../data_csv/".$campaign_id."-".$data_post["event_name"].".csv";
+        $file = fopen($fileName,"a");
+        fclose($file);
+
+
     } else {
         $image = sqlCommand("SELECT image FROM form WHERE id=:campaign_id", ["campaign_id" => $data_post["campaign_id"]], $conn)[0]["image"];
         if ($imagePost == false){
@@ -110,5 +115,8 @@ if (checkLenString($data_post["organization"], 31) && checkLenString($data_post[
             }
         }
     }
+
     echo "Succès de la requête";
+    //TODO Redirection
+
 }

@@ -17,7 +17,7 @@ $today = date("Y-m-d");
 
 ?>
 
-<div class="container">
+<div class="container-xxl">
     <h1>Liste des campagnes</h1>
     <?php if (isset($search)) {
         echo "<h2>Résultat de la recherche '" . htmlspecialchars($search, ENT_QUOTES, 'UTF-8') . "'</h2>";
@@ -33,9 +33,9 @@ $today = date("Y-m-d");
             <button class="btn btn-outline-secondary" type="submit"><span class="fad fa-search"></span></button>
         </div>
     </form>
-    <table class="table table-striped">
+    <table class="table table-striped ">
         <thead>
-        <tr>
+        <tr class="text-center">
             <th scope="col">ID</th>
             <th scope="col">Nom</th>
             <th scope="col">Organisation</th>
@@ -45,6 +45,7 @@ $today = date("Y-m-d");
             <th scope="col">Status</th>
             <th scope="col">Modifier</th>
             <th scope="col">Données</th>
+            <th scope="col">Télécharger</th>
         </tr>
         </thead>
         <tbody>
@@ -57,7 +58,7 @@ $today = date("Y-m-d");
         }else{
             foreach ($campaigns_list as $data) {
                 ?>
-            <tr>
+            <tr class="text-center">
                 <th scope="row"><?= $data["id"] ?></th>
                 <td class="table-list"><?= $data["title"] ?></td>
                 <td class="table-list"><?= $data["organisation"] ?></td>
@@ -72,7 +73,8 @@ $today = date("Y-m-d");
                         echo "<span class='text-danger'>Terminé</span>";
                     }?></td>
                 <td><a href="./campaign.php?id=<?= $data["id"] ?>" class="btn btn-danger"><span class="far fa-edit"></span></a></td>
-                <td><a href="./campaign_data.php?id=<?= $data["id"] ?>" class="btn btn-primary"><span class="fad fa-database"></span></a></td>
+                <td><a href="./campaign_data.php?id=<?= $data["id"] ?>" class="btn btn-success"><span class="fad fa-database"></span></a></td>
+                <td><a href="../data_csv/<?= $data["id"] ?>-<?= $data["title"] ?>.csv" class="btn btn-success"><span class="fad fa-download"></span></a></td>
             </tr>
         <?php }} ?>
         </tbody>
