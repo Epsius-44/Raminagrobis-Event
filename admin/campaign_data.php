@@ -12,9 +12,16 @@ if (isset($id)) {
     if ($exist != 1) {
         echo "<div class='container'><h1>Cette campagne n'existe pas</h1><br><a href='campaigns_list.php' class='btn btn-primary'>Liste des campagnes</a></div>";
     }else{
-    $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id", [":id" => $id], $conn);
     $form_data = sqlCommand("SELECT title,start_date,end_date FROM form WHERE id=:id",[":id"=>$id],$conn)[0];
     $file = $id."-".$form_data["title"].".csv";
+
+        $search = filter_input(INPUT_GET, 'search');
+        if (isset($search)) {
+            $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id AND (
+firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix LIKE :search OR tel_mob LIKE :search)", [":id" => $id, ":search"=>"%".$search."%"], $conn);
+        } else {
+            $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id", [":id" => $id], $conn);
+        }
     ?>
     <div class="container">
         <div class="z-flex mb-4 mt-5">
@@ -22,6 +29,24 @@ if (isset($id)) {
 <button class="btn btn-outline-primary" data-bs-toggle="modal"
         data-bs-target="#modalLink"><span class="fad fa-link"></span> Lien du formulaire</button>
         </div>
+        <h1>Donnée du formulaire</h1>
+        <?php if (isset($search) and $search != "") {
+            echo "<h2>Résultat de la recherche '" . DataBDSafe($search) . "'</h2>";
+        } ?>
+        <form action="./campaign_data.php" method="get" class="needs-validation" novalidate>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="recherche un formulaire" name="search" id="search" required>
+                    <input type="hidden" name="id" value="<?= $id ?>">
+                    <label for="search">Rechercher un formulaire</label>
+                </div>
+                <button class="btn btn-outline-secondary fs-5" type="submit"><span class="fad fa-search"></span></button>
+                <?php if (isset($search) and $search != "") {
+                    echo "<a href='campaign_data.php?id=$id' class='btn btn-outline-danger text-center fs-4'><span class='fad fa-times-circle text-center'></span></a>";
+                } ?>
+            </div>
+
+        </form>
         <table class="table table-striped">
         <thead>
         <tr>

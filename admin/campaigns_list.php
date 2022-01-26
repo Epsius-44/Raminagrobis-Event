@@ -66,11 +66,11 @@ $today = date("Y-m-d");
     } ?>
 
 
-    <form action="./campaigns_list.php" method="get" class="needs-validation" novalidate>
+    <form action="./campaigns_list.php" method="get">
         <div class="input-group mb-3">
             <div class="form-floating">
                 <input type="text" class="form-control" placeholder="recherche un formulaire" name="search" id="search"
-                       required>
+                       >
                 <label for="search">Rechercher un formulaire</label>
             </div>
             <button class="btn btn-outline-secondary fs-5" type="submit"><span class="fad fa-search"></span></button>
@@ -172,24 +172,6 @@ $today = date("Y-m-d");
         echo "var myModal = new bootstrap . Modal(document . getElementById('modalCampaignSuccess'), {});
         myModal . show();";
     };?>
-
-    <!-- apparition et disparition -->
-    (function () {
-        'use strict'
-
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
 </script>
 <?php
 include_once "../src/layout/footer.php";

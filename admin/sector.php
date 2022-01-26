@@ -31,11 +31,11 @@ if (isset($search)) {
             <?php if (isset($search) and $search != "") {
                 echo "<h2>Résultat de la recherche '" . DataBDSafe($search) . "'</h2>";
             } ?>
-            <form action="./sector.php" method="get" class="needs-validation" novalidate>
+            <form action="./sector.php" method="get">
                 <div class="input-group mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control" placeholder="recherche un formulaire"
-                               name="search" id="search" value="<?= DataBDSafe($search) ?>" required>
+                               name="search" id="search" value="<?= DataBDSafe($search) ?>">
                         <label for="search">Rechercher un secteur</label>
                     </div>
                     <button class="btn btn-outline-secondary fs-5" type="submit"><span

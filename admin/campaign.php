@@ -122,6 +122,7 @@ include "../src/layout/headerAdmin.php";
                                value="<?php echo $campaign_data['end_date']; ?>"
                                required>
                         <label for="end_date">date de fin du formulaire (à 23h59)</label>
+                        <div class="invalid-feedback">Vous devez sélectionner une date de fin qui correspond, soit à la même date que la date de début, soit à une date ultérieur</div>
                     </div>
                     <fieldset class="form-control">
                         <legend>Secteur d'activité</legend>
