@@ -3,6 +3,8 @@ $title = "Données formulaire";
 include_once "../src/layout/headerAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
+include_once "../src/actions/function.php";
+
 
 $id = filter_input(INPUT_GET, 'id');
 if (isset($id)) {
@@ -11,10 +13,15 @@ if (isset($id)) {
         echo "<div class='container'><h1>Cette campagne n'existe pas</h1><br><a href='campaigns_list.php' class='btn btn-primary'>Liste des campagnes</a></div>";
     }else{
     $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id", [":id" => $id], $conn);
-    $file = $id."-".sqlCommand("SELECT title FROM form WHERE id=:id",[":id"=>$id],$conn)[0]["title"].".csv";
+    $form_data = sqlCommand("SELECT title,start_date,end_date FROM form WHERE id=:id",[":id"=>$id],$conn)[0];
+    $file = $id."-".$form_data["title"].".csv";
     ?>
     <div class="container">
-        <a href="../data_csv/<?= $file ?>" class="btn btn-success mb-4"><span class="fad fa-download"></span>  Télécharger les données</a>
+        <div class="z-flex mb-4 mt-5">
+        <a href="../data_csv/<?= $file ?>" class="btn btn-success"><span class="fad fa-download"></span>  Télécharger les données</a>
+<button class="btn btn-outline-primary" data-bs-toggle="modal"
+        data-bs-target="#modalLink"><span class="fad fa-link"></span> Lien du formulaire</button>
+        </div>
         <table class="table table-striped">
         <thead>
         <tr>
@@ -40,6 +47,7 @@ if (isset($id)) {
             <?php
         } else {
             foreach ($campaign_data as $data) {
+
                 ?>
                 <tr>
                     <td class="table-list"><?php
@@ -55,30 +63,56 @@ if (isset($id)) {
                                 break;
                         }
                         ?></td>
-                    <td class="table-list"><?= $data["firstname"] ?></td>
-                    <td class="table-list"><?= $data["lastname"] ?></td>
-                    <td><?= $data["email"] ?></td>
-                    <td><?= $data["tel_mob"] ?></td>
-                    <td><?= $data["tel_fix"] ?></td>
+                    <td class="table-list"><?= dataBDSafe($data["firstname"]) ?></td>
+                    <td class="table-list"><?= dataBDSafe($data["lastname"]) ?></td>
+                    <td><?= dataBDSafe($data["email"]) ?></td>
+                    <td><?= dataBDSafe($data["tel_mob"]) ?></td>
+                    <td><?= dataBDSafe($data["tel_fix"]) ?></td>
                     <td><?php if($data["type"]==1){
                         $sector = sqlCommand("SELECT name FROM sector WHERE id=:id",[":id"=>$data["id_category"]],$conn)[0]["name"];
-                        echo $data["comp_name"]."</td><td>".$sector;
+                        echo dataBDSafe($data["comp_name"])."</td><td>".dataBDSafe($sector);
                         }else{
                         echo "particulier</td><td>/";
                         }?></td>
-                    <td><?= $data["people_num"] ?></td>
+                    <td><?= dataBDSafe($data["people_num"]) ?></td>
                     <td><?php if($data["news"]==1){
                         echo "Inscrit";
                         }else{
                         echo "Non";
                         }?></td>
-                    <td><?= $data["score"] ?></td>
+                    <td><?= dataBDSafe($data["score"]) ?></td>
                 </tr>
             <?php }
         } ?>
         </tbody>
     </table>
     </div>
+        <div class="modal fade" id="modalLink"
+             data-bs-keyboard="false" tabindex="-1">
+            <!-- création d'une popup pour afficher le lien d'un formulaire -->
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Lien du formulaire</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Le lien de la campagne "<?= dataBDSafe($form_data["title"]); ?>" (valide
+                        du <?= date("d/m/Y", strtotime($form_data["start_date"])) ?> à 00h00
+                        au <?= date("d/m/Y", strtotime($form_data["end_date"])) ?> est :
+                        <input id="azerty" type="text" class="form-control" readonly
+                               value="<?= url_campaign($id, 2) ?>">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger"
+                                data-bs-dismiss="modal">Retour
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <?php
     }
     include_once "../src/layout/footer.php";

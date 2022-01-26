@@ -11,7 +11,8 @@
     <script src="https://kit.fontawesome.com/da7397688c.js" crossorigin="anonymous"></script>
     <title><?= $title ?></title>
 </head>
-<?php if (isset($class) == false){
+<?php include_once "../src/actions/security_token.php";
+if (isset($class) == false){
     $class = "";
 }
 if (isset($navbar)==false){
@@ -20,7 +21,7 @@ if (isset($navbar)==false){
 ?>
 <body class="<?= $class ?>">
 <?php if ($navbar){ ?>
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <img src="../assets/img/logo-raminagrobis.png" alt="" height="40px" class="me-5">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
@@ -28,13 +29,13 @@ if (isset($navbar)==false){
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <li class="nav-item me-3">
                     <a class="nav-link active" href="./sector.php">Secteurs d'activité</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item me-3">
                     <a class="nav-link active" href="./campaigns_list.php">Liste des campagnes</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item me-3">
                     <a class="nav-link active" href="./campaign.php">Créer une campagne</a>
                 </li>
             </ul>
@@ -42,10 +43,13 @@ if (isset($navbar)==false){
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <!-- TODO enelever le texte "test" et remettre la fonction php quand l'utilisateur devra forcément être connecté pour accéder aux pages admin-->
-                        <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span> test<?php //echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span> test<?php //echo DataBDSafe($_SESSION['username']); ?></p>
                     </li>
                     <li class="nav-item mt-2">
-                        <a class="btn btn-primary" aria-current="page" href="../src/actions/logout.php"><p class="my-auto"><span class="fas fa-sign-out-alt"></span> Se déconnecter</p></a>
+                        <form action="../src/actions/logout.php" method="post">
+                            <input type="hidden" name="token" value="<?= $token ?>">
+                            <button type="submit" class="btn btn-primary"><span class="fas fa-sign-out-alt"></span> Se déconnecter</button>
+                        </form>
                     </li>
                 </ul>
             </div>

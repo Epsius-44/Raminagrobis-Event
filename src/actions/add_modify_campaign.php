@@ -46,7 +46,6 @@ $imagePost = $_FILES['add_file']['error'] != 4;
 $checkFileResult = checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]);
 
 
-//FIXME checkfile quand aucun fichier select pour modifier une campagne
 if (checkLenString($data_post["organization"], 31) && checkLenString($data_post["event_name"], 255)
     && checkLenString($data_post["description"], 65535) && checkLenString($data_post["color_primary"], 6, 6)
     && checkLenString($data_post["color_secondary"], 6, 6) && verifDate($data_post["start_date"], $data_post["end_date"])
@@ -75,7 +74,8 @@ if (checkLenString($data_post["organization"], 31) && checkLenString($data_post[
         $fileName = "../../data_csv/".$campaign_id."-".$data_post["event_name"].".csv";
         $file = fopen($fileName,"a");
         fclose($file);
-
+        $_SESSION["id_campaign"] = $campaign_id;
+        $_SESSION["status_campaign"] = "Campagne créer avec succès";
 
     } else {
         $image = sqlCommand("SELECT image FROM form WHERE id=:campaign_id", ["campaign_id" => $data_post["campaign_id"]], $conn)[0]["image"];
@@ -114,9 +114,16 @@ if (checkLenString($data_post["organization"], 31) && checkLenString($data_post[
                 sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $data_post["campaign_id"], "id_sector" => $s], $conn);
             }
         }
+        $_SESSION["id_campaign"] = $data_post["campaign_id"];
+        $_SESSION["status_campaign"] = "Campagne modifier avec succès";
     }
 
-    echo "Succès de la requête";
-    //TODO Redirection
-
+    $_SESSION["error_campaign"] = false;
+    $_SESSION["title_campaign"] = $data_post["event_name"];
+    $_SESSION["start_campaign"] = $data_post["start_date"];
+    $_SESSION["end_campaign"] = $data_post["end_date"];
+}else{
+    $_SESSION["error_campaign"] = true;
+    $_SESSION["status_campaign"] = "Impossible de créer la campagne, les données ne sont pas valide";
 }
+header("Location: ../../admin/campaigns_list.php");
