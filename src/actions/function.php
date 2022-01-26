@@ -48,3 +48,11 @@ function nbDays($start_date, $end_date) {
 
     return(($diff / 86400));
 }
+
+function url_campaign($id,$level){
+    return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http')."://".$_SERVER['SERVER_NAME'].dirname($_SERVER["REQUEST_URI"],$level)."/?id=".$id);
+}
+
+function DataBDSafe($data){
+    return htmlspecialchars($data, ENT_SUBSTITUTE, 'UTF-8');
+}

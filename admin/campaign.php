@@ -1,5 +1,4 @@
 <?php
-include_once "../src/actions/security_token.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 $campaign_id = filter_input(INPUT_GET, "id");
