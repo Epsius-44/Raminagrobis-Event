@@ -71,9 +71,6 @@ if (checkLenString($data_post["organization"], 31) && checkLenString($data_post[
         foreach ($sector as $s) {
             sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $campaign_id, ":id_sector" => $s], $conn);
         }
-        $fileName = "../../data_csv/".$campaign_id."-".$data_post["event_name"].".csv";
-        $file = fopen($fileName,"a");
-        fclose($file);
         $_SESSION["id_campaign"] = $campaign_id;
         $_SESSION["status_campaign"] = "Campagne créer avec succès";
 

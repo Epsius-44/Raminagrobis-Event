@@ -1,6 +1,8 @@
 <?php
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
+include_once "../src/actions/function.php";
+
 $campaign_id = filter_input(INPUT_GET, "id");
 $sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn);
 if (isset($campaign_id) == true) {
@@ -239,23 +241,7 @@ include "../src/layout/headerAdmin.php";
         element.setAttribute("min", document.getElementById("start_date").value)
     }
 
-    (function () {
-        'use strict'
-
-        var forms = document.querySelectorAll('.needs-validation')
-
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
+    <?php jsFormValidatation(); ?>
 
 </script>
 <?php
