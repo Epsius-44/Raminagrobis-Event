@@ -1,5 +1,9 @@
 <?php
 $form_id = filter_input(INPUT_GET, "id");
+if (isset($form_id)){
+    $redirect = "campaign_data.php?id=$form_id";
+}
+include_once "../src/actions/checkConnectionAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 include_once "../src/actions/function.php";

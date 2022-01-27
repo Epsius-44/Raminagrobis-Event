@@ -1,9 +1,15 @@
 <?php
+$campaign_id = filter_input(INPUT_GET, "id");
+if (isset($campaign_id)){
+    $redirect = basename(__FILE__)."?id=".$campaign_id;
+}else{
+    $redirect = basename(__FILE__);
+}
+include_once "../src/actions/checkConnectionAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 include_once "../src/actions/function.php";
 
-$campaign_id = filter_input(INPUT_GET, "id");
 $sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn);
 if (isset($campaign_id) == true) {
     $data = sqlCommand("SELECT * FROM form WHERE id = :campaign_id", [":campaign_id" => $campaign_id], $conn);
@@ -167,8 +173,8 @@ include "../src/layout/headerAdmin.php";
 <script>
     var element = document.getElementsByName("campaign");
     var checkbox = document.getElementById("checkbox_required");
-    var count_checkbox = countCheckedPureJS()
-    validate_checkbox()
+    var count_checkbox = countCheckebox()
+    validateCheckbox()
 
     function checkbox_count (input) {
         if (input.checked) {
@@ -176,10 +182,10 @@ include "../src/layout/headerAdmin.php";
         }else{
             count_checkbox --;
         }
-        validate_checkbox()
+        validateCheckbox()
     }
 
-    function validate_checkbox () {
+    function validateCheckbox () {
         if (count_checkbox >= 1 && checkbox.hasAttribute("required")){
             checkbox.removeAttribute("required");
         }else if (count_checkbox === 0 && checkbox.hasAttribute("required") === false){
@@ -225,7 +231,7 @@ include "../src/layout/headerAdmin.php";
         input.style.height = (input.scrollHeight + 2) + 'px';
     }
 
-    function countCheckedPureJS() {
+    function countCheckebox() {
         var elements = document.getElementsByClassName("group-checkbox"), i, count = 0;
         for (i = 0; i < elements.length; i++) {
             if (elements[i].checked) {

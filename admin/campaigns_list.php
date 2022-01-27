@@ -1,28 +1,35 @@
 <?php
 $title = "Liste des campagnes";
+$search = filter_input(INPUT_GET, 'search');
+if (isset($search)){
+    $redirect = basename(__FILE__)."?search=".$search;
+}else{
+    $redirect = basename(__FILE__);
+}
+include_once "../src/actions/checkConnectionAdmin.php";
+include_once "../src/actions/function.php";
 include_once "../src/layout/headerAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
-include_once "../src/actions/function.php";
 
 $modalPrint = false;
-if (isset($_SESSION["error_campaign"])) {
-    if ($_SESSION["error_campaign"]) { ?>
+if (isset($_SESSION["error"])) {
+    if ($_SESSION["error"]) { ?>
         <div class="alert alert-danger">
-            <?= $_SESSION["status_campaign"] ?>
+            <?= $_SESSION["error_message"] ?>
         </div>
     <?php } else {
         $modalPrint = true;
         //création d'une popup pour afficher le lien du formulaire qui vient d'être créer
-        modalBodyLink("modalCampaignSuccess",$_SESSION["status_campaign"],"success",$_SESSION["title_campaign"],$_SESSION["start_campaign"],$_SESSION["end_campaign"],$_SESSION["id_campaign"]);
+        modalBodyLink("modalCampaignSuccess",$_SESSION["error_message"],"success",$_SESSION["title_campaign"],$_SESSION["start_campaign"],$_SESSION["end_campaign"],$_SESSION["id_campaign"]);
 
         unset($_SESSION["id_campaign"]);
         unset($_SESSION["start_campaign"]);
         unset($_SESSION["end_campaign"]);
         unset($_SESSION["title_campaign"]);
     }
-    unset($_SESSION["error_campaign"]);
-    unset($_SESSION["status_campaign"]);
+    unset($_SESSION["error"]);
+    unset($_SESSION["error_message"]);
 }
 
 

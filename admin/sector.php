@@ -1,14 +1,16 @@
 <?php
-include_once "../src/actions/security_token.php";
+$search = filter_input(INPUT_GET, 'search');
+if (isset($search)) {
+    $redirect = basename(__FILE__)."?search=$search";
+}
+include_once "../src/actions/checkConnectionAdmin.php";
 $title = "Modification des catégories";
-include "../src/layout/headerAdmin.php";
+include_once "../src/actions/function.php";
+include_once "../src/layout/headerAdmin.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
-include_once "../src/actions/function.php";
 
 // Listing des secteurs déjà enregistrés dans la base de donnée
-$search = filter_input(INPUT_GET, 'search');
-
 if (isset($search)) {
     $lines = sqlCommand("SELECT * FROM sector  WHERE name LIKE :search ORDER BY name", [":search" => "%" . $search . "%"], $conn);
 } else {
@@ -16,15 +18,15 @@ if (isset($search)) {
 }
 ?>
     <section>
-        <?php if (isset($_SESSION["error_sector"])) {
-            if ($_SESSION["error_sector"]) {
+        <?php if (isset($_SESSION["error"])) {
+            if ($_SESSION["error"]) {
                 echo "<div class='alert alert-danger'>";
             } else {
                 echo "<div class='alert alert-success'>";
             }
-            echo $_SESSION["status_sector"] . "</div>";
-            unset($_SESSION["error_sector"]);
-            unset($_SESSION["status_sector"]);
+            echo $_SESSION["error_message"] . "</div>";
+            unset($_SESSION["error"]);
+            unset($_SESSION["error_message"]);
         } ?>
         <div class="container mt-5">
             <h1>Gestion des secteurs</h1>

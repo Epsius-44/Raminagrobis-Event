@@ -14,16 +14,15 @@
     <script src="https://kit.fontawesome.com/da7397688c.js" crossorigin="anonymous"></script>
     <title><?= $title ?></title>
 </head>
-<?php include_once "../src/actions/security_token.php";
+<?php
 if (isset($class) == false) {
     $class = "";
 }
 if (isset($navbar) == false) {
     $navbar = true;
 }
-?>
-<body class="<?= $class ?>">
-<?php if ($navbar){ ?>
+echo "<body class='$class'>";
+if ($navbar){?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <img src="../assets/img/logo-raminagrobis.png" alt="" height="40px" class="me-5">
@@ -47,7 +46,7 @@ if (isset($navbar) == false) {
                 <li class="nav-item">
                     <!-- TODO enlever le texte "test" et remettre la fonction php quand l'utilisateur devra forcément être connecté pour accéder aux pages admin-->
                     <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span>
-                        test<?php //echo dataDBSafe($_SESSION['username']); ?></p>
+                        <?php echo dataDBSafe($_SESSION['username']); ?></p>
                 </li>
                 <li class="nav-item mt-2">
                     <form action="../src/actions/logout.php" method="post">

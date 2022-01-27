@@ -1,13 +1,14 @@
 <?php
 include_once "../src/actions/security_token.php";
-$title = "Connexion à votre compte";
+$title = "Connexion";
 $class = "d-flex p-2 flex-column";
 $navbar = false;
 include "../src/layout/headerAdmin.php";
-if (isset($_SESSION["connection_error"])){
-    $error_message = $_SESSION["connection_error"];
+if (isset($_SESSION["error_message_connection"])){
+    $error_message = $_SESSION["error_message_connection"];
     $error = true;
-    unset($_SESSION["connection_error"]);
+    unset($_SESSION["error_message_connection"]);
+
 }else{
     $error=false;
 }
