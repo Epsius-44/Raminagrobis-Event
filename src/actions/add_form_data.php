@@ -4,70 +4,56 @@ include_once "../config.php";
 include_once "database-connection.php";
 include_once "function.php";
 
-function checkboxValue($check){
-    if ($check != "") {
-        return 1;
-    }
-    return 0;
+
+function checkSector($sector_id, $conn)
+{
+    return (sqlCommand("SELECT count(id) FROM sector WHERE id=:sector_id", [":sector_id" => $sector_id], $conn)[0][0] == 1);
 }
 
-function isCompagny($value, $peopleType){
-    if ($peopleType === 1){
-        return $value;
+function checkForm($id, $conn)
+{
+    $form_data = sqlCommand("SELECT start_date,end_date FROM form WHERE id=:id", [":id" => $id], $conn)[0];
+    $today = date("Y-m-d");
+    if (empty($form_data) or $today < $form_data['start_date'] or $today > $form_data['end_date']) {
+        return false;
     }else{
-        return NULL;
+        return true;
     }
 }
 
-function toInt($value, $peopleType){
-    $t = isCompagny($value, $peopleType);
-    if ($t != NULL){
-        return (int)$value;
+$data = getPost(["civility-field", "firstname-field", "lastname-field", "email-field", "mobile-field", "fixe-field", "peopleType-field", "sector-field", "compagny-field", "news-field", "rgpd-field", "id","number"]);
+
+$data["number"] = 1;// FIXME Add number field in form
+
+if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["firstname-field"], 255) and checkLenString($data["lastname-field"], 255) and checkEmail($data["email-field"]) and checkForm($data["id"],$conn) and checkInt((int)$data["number"],1,0) and
+    checkMobil($data["mobile-field"]) and checkFix($data["fixe-field"]) and (checkboxCheck($data["peopleType-field"]==0) or (checkboxCheck($data["peopleType-field"]==1) and checkSector($data["sector-field"], $conn) and checkLenString($data["compagny-field"], 255))) and checkboxCheck("rgpd-field")==1) {
+    $data["news-field"] = checkboxCheck($data["news-field"]); //transforme la valeur news-field qui est égal à null ou on en 0 ou 1
+    $data["peopleType-field"] = checkboxCheck($data["peopleType-field"]);
+
+    $score = 0;
+
+    if ($data["peopleType-field"] == false) {
+        $data["sector-field"] = null;
+        $data["compagny-field"] = null;
     }
-    return NULL;
+    if ($data["fixe-field"]==null){
+        $data["fixe-field"]=null;
+    }
+    if ($data["mobile-field"]==null){
+        $data["mobile-field"]=null;
+    }
+
+    $score += scoring($data["news-field"], 1); //+1 si la checkbox est cochée
+    $score += scoring($data["mobile-field"], 1); //+1 si le champ du téléphone mobile est remplie
+    $score += scoring($data["fixe-field"], 1); //+1 si le champ du téléphone fixe est remplie
+    $score += scoring($data["peopleType-field"], 3); //+3 s'il s'agit d'une entreprise
+    $score += (int)$data["number"]; //+1 par personne qui vient à l'événement
+
+    sqlCommand("INSERT INTO form_data (civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_form, id_category) VALUES (:civility,:firstname,:lastname,:email,:tel_mob, :tel_fix, :type, :comp_name, :people_num, :news, :score, :id_form, :id_category)",
+    [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn);
+    header("Location: ../../?id=".$data["id"]."&register=success");
+}else{
+    $_SESSION["error"]=true;
+    $_SESSION["error_message"]="Les données envoyées ne sont pas valide, merci de remplir de nouveau le formulaire";
+    header("Location: ../../?id=".$data["id"]);
 }
-
-$data = getPost(["civility-field","firstname-field","lastname-field","email-field","mobile-field","fixe-field","peopleType-field","sector-field","news-field"]);
-
-$civility = filter_input(INPUT_POST, "civility-field");
-$firstname = filter_input(INPUT_POST, "firstname-field");
-$lastname = filter_input(INPUT_POST, "lastname-field");
-$email = filter_input(INPUT_POST, "email-field");
-$mobile = filter_input(INPUT_POST, "mobile-field");
-$fixe = filter_input(INPUT_POST, "fixe-field");
-$peopleType = checkboxValue(filter_input(INPUT_POST, "peopleType-field"));
-$sector = toInt(filter_input(INPUT_POST, "sector-field"), $peopleType);
-$compagny = isCompagny(filter_input(INPUT_POST, "compagny-field"), $peopleType);
-$number = 1; // FIXME Add number field in form
-$news = checkboxValue(filter_input(INPUT_POST, "news-field"));
-$score = 3; //TODO ADD SCORE DEFINITION
-$id_form = 1; //TODO ADD FORM ID
-
-var_dump($peopleType);
-var_dump($_POST);
-
-
-
-/*
-
-// TODO ADD DATA VALIDATION
-$request = $conn->prepare("INSERT INTO form_data (civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_form, id_category) VALUES (:civility, :firstname, :lastname, :email, :tel_mob, :tel_fix, :type, :comp_name, :people_num, :news, :score, :id_form, :id_category)");
-$request->bindParam(":civility", $civility);
-$request->bindParam(":firstname", $firstname);
-$request->bindParam(":lastname", $lastname);
-$request->bindParam(":email", $email);
-$request->bindParam(":tel_mob", $mobile);
-$request->bindParam(":tel_fix", $fixe);
-$request->bindParam(":type", $peopleType);
-$request->bindParam(":comp_name", $compagny);
-$request->bindParam(":people_num", $number);
-$request->bindParam(":news", $news);
-$request->bindParam(":score", $score);
-$request->bindParam(":id_form", $id_form);
-$request->bindParam(":id_category", $sector);
-try{
-    $request->execute();
-}catch (PDOException $e){
-    var_dump($e);
-}
-*/

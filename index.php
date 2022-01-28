@@ -1,10 +1,12 @@
 <?php
 $form_id = filter_input(INPUT_GET, "id");
+$register = filter_input(INPUT_GET,"register");
 $title = "Participation à un event";
 include_once "src/actions/security_token.php";
 include_once "./src/layout/header.php";
 include_once "./src/config.php";
 include_once "./src/actions/database-connection.php";
+include_once "./src/actions/function.php";
 $result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn);
 $today = date("Y-m-d");
 if (empty($result) or $today < $result[0]['start_date'] or $today > $result[0]['end_date']) {
@@ -26,9 +28,10 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
             <h1>🎫 <?php echo $result['title']; ?></h1>
             <p><?= $result['description'] ?></p>
             <hr>
-            <h2>Organisé par 🏢 <?php echo $result['organisation']; ?></h2>
+            <h2>Organisé par 🏢 <?php echo dataDBSafe($result['organisation']); ?></h2>
         </div>
         <div class="container">
+            <?php if(isset($register)==false or $register!="success"){?>
             <div class="container-form">
                 <form action="src/actions/add_form_data.php" id="register" method="POST" class="form-section">
                     <h2 style="text-align: center">S'inscrire à l'évènement</h2>
@@ -37,7 +40,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="civility-field">🧑 Civilité (*)</label>
                             <select name="civility-field"
-                                    style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                     id="civility-field"
                                     class="form-control"
                                     required>
@@ -50,7 +53,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 3;">
                             <label for="firstname-field">🧑 Prénom (*)</label>
                             <input type="text"
-                                   style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                    name="firstname-field"
                                    id="firstname-field"
                                    placeholder="Camille"
@@ -60,7 +63,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 3;">
                             <label for="lastname-field">🧑 Nom (*)</label>
                             <input type="text"
-                                   style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                    name="lastname-field"
                                    id="lastname-field"
                                    placeholder="Dupont"
@@ -70,18 +73,19 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                     </div>
                     <label for="email-field">📧 E-mail (*)</label>
                     <input type="email"
-                           style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                           style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                            name="email-field"
                            id="email-field"
                            placeholder="camille@dupont.fr"
                            class="form-control"
-                           pattern="^$|^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                           pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                           required>
                     <div class="inline-form">
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="mobile-field">📞 Téléphone Mobile</label>
                             <input type="tel"
-                                   style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
-                                   pattern="[0-9]{10}"
+                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   pattern="^0[6-7]\d{8}$|^$"
                                    name="mobile-field"
                                    id="mobile-field"
                                    placeholder="0600000000"
@@ -90,14 +94,15 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="fixe-field">📞 Téléphone Fixe</label>
                             <input type="tel"
-                                   style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
-                                   pattern="[0-9]{10}"
+                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   pattern="^0[1-5]\d{8}$|^$"
                                    name="fixe-field"
                                    id="fixe-field"
                                    placeholder="0200000000"
                                    class="form-control">
                         </div>
                     </div>
+                    <!--TODO champs nombre de personnes-->
                     <label for="peopleType-field">🏭 Entreprise ?</label>
                     <input type="checkbox"
                            name="peopleType-field"
@@ -107,23 +112,24 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="sector-field" id="sector-label" class="hidden" hidden>🎯 Secteur (*)</label>
                             <select name="sector-field"
-                                    style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                     id="sector-field"
                                     hidden>
                                 <option value="" selected disabled>Choisir un secteur d'activité</option>
                                 <?php
-                                foreach ($sector as $s){
+                                foreach ($sector as $s) {
                                     ?>
-                                    <option value="<?= $s['id'] ?>"><?= $s['name'] ?></option>
+                                    <option value="<?= $s['id'] ?>"><?= dataDBSafe($s['name']) ?></option>
                                     <?php
                                 }
                                 ?>
                             </select>
                         </div>
                         <div class="col-form" style="flex-grow: 2;">
-                            <label for="compagny-field" id="compagny-label" class="hidden" hidden>🏭 Nom de l'entreprise (*)</label>
+                            <label for="compagny-field" id="compagny-label" class="hidden" hidden>🏭 Nom de l'entreprise
+                                (*)</label>
                             <input type="text"
-                                   style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                    name="compagny-field"
                                    id="compagny-field"
                                    placeholder="Raminagrobis"
@@ -145,20 +151,39 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                    name="news-field"
                                    id="news-field">
                         </div>
+                        <input type="hidden" name="id" value="<?= $form_id ?>">
                         <input type="hidden" name="token" value="<?= $token ?>">
                     </div>
                     <div class="button">
-                        <button type="submit" style="background-color: <?php echo "#".$result['color_primary']; ?>; border-color: <?php echo "#".$result['color_secondary']; ?>">
+                        <button type="submit"
+                                class="btn"
+                                style="background-color: <?php echo "#" . $result['color_primary']; ?>; border-color: <?php echo "#" . $result['color_secondary']; ?>">
                             Je m'inscrit à l'évènement
                         </button>
                     </div>
+                    <?php if(isset($_SESSION["error"])){
+                       echo "<span style='color: red'>".$_SESSION['error_message']."</span>";
+                       unset($_SESSION["error_message"]);
+                       unset($_SESSION["error"]);
+                    }?>
                 </form>
             </div>
+            <?php } else { ?>
+
+            <h3 style="color: black">Vous vous êtes enregistrés avec succès</h3>
+            <div class="button">
+                <a style="background-color: <?php echo "#" . $result['color_primary']; ?>; border-color: <?php echo "#" . $result['color_secondary']; ?>"
+                   class="btn" href="./?id=<?= $form_id ?>">
+                    Retour au formulaire d'inscription
+                </a>
+
+            <?php } ?>
         </div>
     </section>
 </main>
-<script>
-    function peopleType(){
+<?php if(isset($register)==false or $register!="success"){?>
+    <script>
+    function peopleType() {
         let form_field = [
             document.getElementById("sector-field"),
             document.getElementById("sector-label"),
@@ -169,23 +194,22 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
             for (const field in form_field) {
                 form_field[field].hidden = false;
                 form_field[field].setAttribute("class", "");
-                if (field%2===0) {
+                if (field % 2 === 0) {
                     form_field[field].setAttribute("class", "form-control");
                     form_field[field].required = true;
                 }
             }
-        }
-        else{
+        } else {
             for (const field in form_field) {
                 form_field[field].hidden = true;
                 form_field[field].setAttribute("class", "hidden");
-                if (field%2===0) {
+                if (field % 2 === 0) {
                     form_field[field].required = false;
                 }
             }
         }
     }
 </script>
-<?php
+<?php }
 include "./src/layout/footer.php";
 ?>

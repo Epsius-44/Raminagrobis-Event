@@ -87,14 +87,14 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
                                 ?></td>
                             <td class="table-list"><?= dataDBSafe($data["firstname"]) ?></td>
                             <td class="table-list"><?= dataDBSafe($data["lastname"]) ?></td>
-                            <td><?= dataDBSafe($data["email"]) ?></td>
-                            <td><?= dataDBSafe($data["tel_mob"]) ?></td>
-                            <td><?= dataDBSafe($data["tel_fix"]) ?></td>
+                            <td><?= ($data["email"]==null)?"/":dataDBSafe($data["email"]) ?></td>
+                            <td><?= ($data["tel_mob"]==null)?"/":dataDBSafe($data["tel_mob"]) ?></td>
+                            <td><?= ($data["tel_fix"]==null)?"/":dataDBSafe($data["tel_fix"]) ?></td>
                             <td><?php if ($data["type"] == 1) {
                                     $sector = sqlCommand("SELECT name FROM sector WHERE id=:id", [":id" => $data["id_category"]], $conn)[0]["name"];
                                     echo dataDBSafe($data["comp_name"]) . "</td><td>" . dataDBSafe($sector);
                                 } else {
-                                    echo "particulier</td><td>/";
+                                    echo "/</td><td>/";
                                 } ?></td>
                             <td><?= dataDBSafe($data["people_num"]) ?></td>
                             <td><?php if ($data["news"] == 1) {

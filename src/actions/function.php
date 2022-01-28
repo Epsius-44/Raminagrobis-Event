@@ -5,22 +5,36 @@ function checkLenString($valueCheck, $length_max, $length_min = 1)
     return strlen($valueCheck) <= $length_max && strlen($valueCheck) >= $length_min;
 }
 
+function checkboxCheck($checkbox){
+    return (($checkbox == null)?0:1);
+}
+
+
 function checkInt($value,$min,$max){
-    return ($value>=$min and $value<=$max and gettype($value)=="integer");
+    return ($value>=$min and ($value<=$max or $max==0) and gettype($value)=="integer");
 }
 
 function checkEmail($email){
     return (filter_var($email,FILTER_VALIDATE_EMAIL));
 }
 
-function checkPhone($phone){
-    return preg_match("/^[0-9]{10}^/",$phone) or $phone=="";
+
+function checkMobil($phone){
+    return (preg_match("/^0[6-7]\d{8}$|^$/",$phone)==1 or $phone==null);
+}
+
+function checkFix($phone){
+    return (preg_match("/^0[1-5]\d{8}$|^$/",$phone)==1 or $phone==null);
 }
 
 function checkDateExist($date, $format = "Y-m-d")
 {
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) == $date;
+}
+
+function scoring($data,$score){
+    return (($data==null or $data==false) ? 0:$score);
 }
 
 function verifDate($date1, $date2)

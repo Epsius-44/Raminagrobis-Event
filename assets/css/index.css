@@ -64,7 +64,7 @@ form input.form-control, form select.form-control{
 .button{
     margin: 1rem 1rem 0;
 }
-.button button{
+.button .btn{
     width: 100%;
     padding: 0.7rem 2.5rem;
     margin: 0.3rem;
@@ -80,7 +80,7 @@ form input.form-control, form select.form-control{
     transform: scale(1);
     transition: .3s ease-in-out all;
 }
-button:hover{
+.btn:hover{
     transform: scale(0.95);
     transition: .3s ease-in-out all;
 }
