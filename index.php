@@ -1,7 +1,8 @@
 <?php
 $form_id = filter_input(INPUT_GET, "id");
 $title = "Participation à un event";
-include "./src/layout/header.php";
+include_once "src/actions/security_token.php";
+include_once "./src/layout/header.php";
 include_once "./src/config.php";
 include_once "./src/actions/database-connection.php";
 $result = sqlCommand("SELECT * FROM form WHERE id=:form_id", [":form_id" => $form_id], $conn);
@@ -73,12 +74,13 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                            id="email-field"
                            placeholder="camille@dupont.fr"
                            class="form-control"
-                           required>
+                           pattern="^$|^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                     <div class="inline-form">
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="mobile-field">📞 Téléphone Mobile</label>
                             <input type="tel"
                                    style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                   pattern="[0-9]{10}"
                                    name="mobile-field"
                                    id="mobile-field"
                                    placeholder="0600000000"
@@ -88,6 +90,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                             <label for="fixe-field">📞 Téléphone Fixe</label>
                             <input type="tel"
                                    style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
+                                   pattern="[0-9]{10}"
                                    name="fixe-field"
                                    id="fixe-field"
                                    placeholder="0200000000"
@@ -141,7 +144,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                    name="news-field"
                                    id="news-field">
                         </div>
-
+                        <input type="hidden" name="token" value="<?= $token ?>">
                     </div>
                     <div class="button">
                         <button type="submit" style="background-color: <?php echo "#".$result['color_primary']; ?>; border-color: <?php echo "#".$result['color_secondary']; ?>">

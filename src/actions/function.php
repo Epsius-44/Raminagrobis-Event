@@ -5,6 +5,18 @@ function checkLenString($valueCheck, $length_max, $length_min = 1)
     return strlen($valueCheck) <= $length_max && strlen($valueCheck) >= $length_min;
 }
 
+function checkInt($value,$min,$max){
+    return ($value>=$min and $value<=$max and gettype($value)=="integer");
+}
+
+function checkEmail($email){
+    return (filter_var($email,FILTER_VALIDATE_EMAIL));
+}
+
+function checkPhone($phone){
+    return preg_match("/^[0-9]{10}^/",$phone) or $phone=="";
+}
+
 function checkDateExist($date, $format = "Y-m-d")
 {
     $d = DateTime::createFromFormat($format, $date);

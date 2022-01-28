@@ -1,6 +1,8 @@
 <?php
+include_once "check_security_token.php";
 include_once "../config.php";
 include_once "database-connection.php";
+include_once "function.php";
 
 function checkboxValue($check){
     if ($check != "") {
@@ -24,7 +26,9 @@ function toInt($value, $peopleType){
     }
     return NULL;
 }
-// TODO ADD SECURE TOKEN
+
+$data = getPost(["civility-fild","firstname-field","lastname-field","email-field","mobile-field","fixe-field","peopleType-field","sector-field","news-field"]);
+
 $civility = filter_input(INPUT_POST, "civility-fild");
 $firstname = filter_input(INPUT_POST, "firstname-field");
 $lastname = filter_input(INPUT_POST, "lastname-field");
@@ -39,6 +43,12 @@ $news = checkboxValue(filter_input(INPUT_POST, "news-field"));
 $score = 3; //TODO ADD SCORE DEFINITION
 $id_form = 1; //TODO ADD FORM ID
 
+var_dump($peopleType);
+var_dump($_POST);
+
+
+
+/*
 
 // TODO ADD DATA VALIDATION
 $request = $conn->prepare("INSERT INTO form_data (civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_form, id_category) VALUES (:civility, :firstname, :lastname, :email, :tel_mob, :tel_fix, :type, :comp_name, :people_num, :news, :score, :id_form, :id_category)");
@@ -60,3 +70,4 @@ try{
 }catch (PDOException $e){
     var_dump($e);
 }
+*/
