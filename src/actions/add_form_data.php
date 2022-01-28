@@ -27,9 +27,9 @@ function toInt($value, $peopleType){
     return NULL;
 }
 
-$data = getPost(["civility-fild","firstname-field","lastname-field","email-field","mobile-field","fixe-field","peopleType-field","sector-field","news-field"]);
+$data = getPost(["civility-field","firstname-field","lastname-field","email-field","mobile-field","fixe-field","peopleType-field","sector-field","news-field"]);
 
-$civility = filter_input(INPUT_POST, "civility-fild");
+$civility = filter_input(INPUT_POST, "civility-field");
 $firstname = filter_input(INPUT_POST, "firstname-field");
 $lastname = filter_input(INPUT_POST, "lastname-field");
 $email = filter_input(INPUT_POST, "email-field");
