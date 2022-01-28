@@ -98,7 +98,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                    class="form-control">
                         </div>
                     </div>
-                    <label for="peopleType-field">🏭 Entreprise ? (*)</label>
+                    <label for="peopleType-field">🏭 Entreprise ?</label>
                     <input type="checkbox"
                            name="peopleType-field"
                            id="peopleType-field"
@@ -121,7 +121,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                             </select>
                         </div>
                         <div class="col-form" style="flex-grow: 2;">
-                            <label for="compagny-field" id="compagny-label" class="hidden" hidden>🏭 Nome de l'entreprise (*)</label>
+                            <label for="compagny-field" id="compagny-label" class="hidden" hidden>🏭 Nom de l'entreprise (*)</label>
                             <input type="text"
                                    style="border-bottom: 1px solid <?php echo "#".$result['color_secondary']; ?>"
                                    name="compagny-field"
