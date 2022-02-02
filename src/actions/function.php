@@ -24,7 +24,7 @@ function checkMobil($phone){
 }
 
 function checkFix($phone){
-    return (preg_match("/^0[1-5]\d{8}$|^$/",$phone)==1 or $phone==null);
+    return (preg_match("/^0[1-59]\d{8}$|^$/",$phone)==1 or $phone==null);
 }
 
 function checkDateExist($date, $format = "Y-m-d")

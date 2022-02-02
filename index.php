@@ -95,14 +95,13 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                             <label for="fixe-field">📞 Téléphone Fixe</label>
                             <input type="tel"
                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
-                                   pattern="^0[1-5]\d{8}$|^$"
+                                   pattern="^0[1-59]\d{8}$|^$"
                                    name="fixe-field"
                                    id="fixe-field"
                                    placeholder="0200000000"
                                    class="form-control">
                         </div>
                     </div>
-                    <!--TODO champs nombre de personnes-->
                     <label for="peopleType-field">🏭 Entreprise ?</label>
                     <input type="checkbox"
                            name="peopleType-field"
@@ -137,6 +136,16 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         </div>
 
                     </div>
+                    <label for="number-field">🧑 Nombre de personnes venant à l'évènement (*)</label>
+                    <input type="number"
+                           value="1"
+                           name="number-field"
+                           style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                           id="number-field"
+                           class="form-control"
+                           min="1"
+                           max="999"
+                           required>
                     <div class="inline-form">
                         <div class="col-form" style="flex-grow: 1;">
                             <label for="rgpd-field">RGPD ? (*)</label>

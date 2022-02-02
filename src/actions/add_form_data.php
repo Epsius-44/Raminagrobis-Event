@@ -21,11 +21,9 @@ function checkForm($id, $conn)
     }
 }
 
-$data = getPost(["civility-field", "firstname-field", "lastname-field", "email-field", "mobile-field", "fixe-field", "peopleType-field", "sector-field", "compagny-field", "news-field", "rgpd-field", "id","number"]);
+$data = getPost(["civility-field", "firstname-field", "lastname-field", "email-field", "mobile-field", "fixe-field", "peopleType-field", "sector-field", "compagny-field", "news-field", "rgpd-field", "id","number-field"]);
 
-$data["number"] = 1;// FIXME Add number field in form
-
-if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["firstname-field"], 255) and checkLenString($data["lastname-field"], 255) and checkEmail($data["email-field"]) and checkForm($data["id"],$conn) and checkInt((int)$data["number"],1,0) and
+if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["firstname-field"], 255) and checkLenString($data["lastname-field"], 255) and checkEmail($data["email-field"]) and checkForm($data["id"],$conn) and checkInt((int)$data["number-field"],1,999) and
     checkMobil($data["mobile-field"]) and checkFix($data["fixe-field"]) and (checkboxCheck($data["peopleType-field"]==0) or (checkboxCheck($data["peopleType-field"]==1) and checkSector($data["sector-field"], $conn) and checkLenString($data["compagny-field"], 255))) and checkboxCheck("rgpd-field")==1) {
     $data["news-field"] = checkboxCheck($data["news-field"]); //transforme la valeur news-field qui est égal à null ou on en 0 ou 1
     $data["peopleType-field"] = checkboxCheck($data["peopleType-field"]);
@@ -47,10 +45,10 @@ if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["first
     $score += scoring($data["mobile-field"], 1); //+1 si le champ du téléphone mobile est remplie
     $score += scoring($data["fixe-field"], 1); //+1 si le champ du téléphone fixe est remplie
     $score += scoring($data["peopleType-field"], 3); //+3 s'il s'agit d'une entreprise
-    $score += (int)$data["number"]; //+1 par personne qui vient à l'événement
+    $score += (int)$data["number-field"]; //+1 par personne qui vient à l'événement
 
     sqlCommand("INSERT INTO form_data (civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_form, id_category) VALUES (:civility,:firstname,:lastname,:email,:tel_mob, :tel_fix, :type, :comp_name, :people_num, :news, :score, :id_form, :id_category)",
-    [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn);
+    [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number-field"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn);
     header("Location: ../../?id=".$data["id"]."&register=success");
 }else{
     $_SESSION["error"]=true;
