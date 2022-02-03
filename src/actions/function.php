@@ -1,48 +1,48 @@
 <?php
 
-function checkLenString($valueCheck, $length_max, $length_min = 1)
+function checkLenString($valueCheck, $length_max, $length_min = 1) //vérifie la longueur de la chaîne de caractère
 {
     return strlen($valueCheck) <= $length_max && strlen($valueCheck) >= $length_min;
 }
 
-function checkboxCheck($checkbox){
+function checkboxCheck($checkbox){//retourne true ou false en fonction de si la checkbox est cochée
     return (($checkbox == null)?0:1);
 }
 
 
-function checkInt($value,$min,$max){
+function checkInt($value,$min,$max){ //vérifie la valeur du int
     return ($value>=$min and ($value<=$max or $max==0) and gettype($value)=="integer");
 }
 
-function checkEmail($email){
+function checkEmail($email){ //vérifie si il s'agit d'une adresse mail
     return (filter_var($email,FILTER_VALIDATE_EMAIL));
 }
 
 
-function checkMobil($phone){
+function checkMobil($phone){ //vérifie s'il s'agit d'un numéro d'un téléphone portable
     return (preg_match("/^0[6-7]\d{8}$|^$/",$phone)==1 or $phone==null);
 }
 
-function checkFix($phone){
+function checkFix($phone){//vérifie s'il s'agit d'un numéro d'un téléphone fixe
     return (preg_match("/^0[1-59]\d{8}$|^$/",$phone)==1 or $phone==null);
 }
 
-function checkDateExist($date, $format = "Y-m-d")
+function checkDateExist($date, $format = "Y-m-d") //convertit un string en date
 {
     $d = DateTime::createFromFormat($format, $date);
     return $d && $d->format($format) == $date;
 }
 
-function scoring($data,$score){
+function scoring($data,$score){ //retourne 0 si $data=null ou false sinon retourne $score
     return (($data==null or $data==false) ? 0:$score);
 }
 
-function verifDate($date1, $date2)
+function verifDate($date1, $date2) //vérifie les dates
 {
     return checkDateExist($date1) && checkDateExist($date2) && $date1 <= $date2;
 }
 
-function getPost($args)
+function getPost($args) //récupères tous les données envoyés en post portant dont le nom est entrée en paramètre
 {
     $result = [];
     foreach ($args as $varName) {
@@ -51,7 +51,7 @@ function getPost($args)
     return $result;
 }
 
-function moveFile($file_name_post, $destinationPath, $newName, $authorized_type = ["*"])
+function moveFile($file_name_post, $destinationPath, $newName, $authorized_type = ["*"]) //déplacer un fichier upload
 {
     if (checkFile($file_name_post, $authorized_type) == true) {
         $extension = pathinfo(basename($_FILES[$file_name_post]["name"]), PATHINFO_EXTENSION);
@@ -64,12 +64,12 @@ function moveFile($file_name_post, $destinationPath, $newName, $authorized_type 
 }
 
 
-function checkFile($file_name_post, $authorized_type = ["*"])
+function checkFile($file_name_post, $authorized_type = ["*"]) //vérifie si un fichier upload est conforme
 {
     return ($_FILES[$file_name_post]["error"] == 0 and ($authorized_type == ["*"] or in_array($_FILES[$file_name_post]["type"], $authorized_type)));
 }
 
-function nbDays($start_date, $end_date)
+function nbDays($start_date, $end_date) //retourne le nombre de jour entre les deux dates
 {
 
     $start = explode("-", $start_date);
@@ -81,23 +81,23 @@ function nbDays($start_date, $end_date)
     return (($diff / 86400));
 }
 
-function url_campaign($id, $level)
+function url_campaign($id, $level) //retourne l'URL de la campagne
 {
     return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http') . "://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"], $level) . "/?id=" . $id);
 }
 
-function dataDBSafe($data)
+function dataDBSafe($data) //sécurise un string pour éviter l'injection de code
 {
     return htmlspecialchars($data, ENT_SUBSTITUTE, 'UTF-8');
 }
 
-function clean($string)
+function clean($string) //supprime les ; et remplace les espaces par des -
 {
     $string = str_replace(' ', '-', $string);
     return str_replace(';', "", $string);
 }
 
-function searchInput($search, $link1, $link2, $inputIdHidden = null)
+function searchInput($search, $link1, $link2, $inputIdHidden = null) //HTML pour la barre de recherche
 {
     echo "<form action='$link1' method='get'>
         <div class='input-group mb-3'>
@@ -114,7 +114,7 @@ function searchInput($search, $link1, $link2, $inputIdHidden = null)
     echo "</div></form>";
 }
 
-function searchData($title, $search, $link1, $link2, $inputHidden = null)
+function searchData($title, $search, $link1, $link2, $inputHidden = null) //affichage du titre de la page + "résultat de la requête"
 {
     echo "<h1>" . $title . "</h1>";
     if (isset($search) and $search != "") {
@@ -123,7 +123,7 @@ function searchData($title, $search, $link1, $link2, $inputHidden = null)
     searchInput($search, $link1, $link2, $inputHidden);
 }
 
-function jsFormValidatation()
+function jsFormValidatation() //javascript utilisé pour la validation des formulaires
 {
     echo "(function () {
             var forms = document.querySelectorAll('.needs-validation')
@@ -140,24 +140,24 @@ function jsFormValidatation()
         })()";
 }
 
-function modalButton($text, $color, $target)
+function modalButton($text, $color, $target) //bouton pour afficher une popup
 {
     echo "<button type = 'button' class='btn btn-$color' data-bs-toggle='modal' data-bs-target = '#$target'>$text</button>";
 }
 
-function modalTop($id)
+function modalTop($id) //haut de l'HTML d'une popup
 {
     echo "<div class='modal fade' id='$id' data-bs-keyboard='false' tabindex='-1' data-bs-backdrop='static'>
     <div class='modal-dialog modal-dialog-centered'>
         <div class='modal-content'>";
 }
 
-function modalBottom()
+function modalBottom() //bas de l'HTML d'une popup
 {
     echo "</div></div></div>";
 }
 
-function modalBodyFormRenameSector($sector_name, $id, $token)
+function modalBodyFormRenameSector($sector_name, $id, $token) //corps de la popup pour renommer un secteur
 {
     modalTop("modalRenameSector" . $id);
     echo "<form action='../src/actions/modify_name_sector.php' class='needs-validation' method='post' novalidate>
@@ -185,7 +185,7 @@ function modalBodyFormRenameSector($sector_name, $id, $token)
     modalBottom();
 }
 
-function modalBodyFormDeleteSector($sector_name, $id, $token)
+function modalBodyFormDeleteSector($sector_name, $id, $token) //corps de la popup pour supprimer un secteur
 {
     modalTop("modalDeleteSector" . $id);
     echo "<form action='../src/actions/delete_sector.php' method='post'>
@@ -216,7 +216,7 @@ function modalBodyFormDeleteSector($sector_name, $id, $token)
     modalBottom();
 }
 
-function modalBodyLink($modal_id, $modal_title,$color,$title, $start, $end, $id){
+function modalBodyLink($modal_id, $modal_title,$color,$title, $start, $end, $id){ //corps de la popup pour afficher le lien d'une campagne
 modalTop($modal_id);
 echo "
     <div class='modal-header bg-$color'>

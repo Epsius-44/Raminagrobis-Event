@@ -3,8 +3,8 @@ include_once "check_security_token.php";
 include_once "function.php";
 $data_post = getPost(["organization", "event_name", "description", "color_primary", "color_secondary", "start_date", "end_date", "campaign_id"]);
 
-$redirect = "campaigns_list.php";
-if (isset($data_post["campaign_id"])) {
+$redirect = "campaigns_list.php"; //page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
+if (isset($data_post["campaign_id"])) { //message d'erreur après la connexion de l'utilisateur s'il n'était pas encore connecté
     $message = "Suite à une erreur, la campagne n'a pas pu être modifié, veuillez recommencer";
 } else {
     $message = "Suite à une erreur, la campagne n'a pas pu être créée, veuillez recommencer";
@@ -14,18 +14,19 @@ if (isset($_SESSION["user_connect"])) {
     include_once "../config.php";
     include_once "database-connection.php";
 
-    $data_post["color_primary"] = substr($data_post["color_primary"], 1);
+    $data_post["color_primary"] = substr($data_post["color_primary"], 1); //supprime le # des couleurs exadecimales
     $data_post["color_secondary"] = substr($data_post["color_secondary"], 1);
     $sector = [];
     $sector_id = sqlCommand("SELECT id FROM sector", [], $conn);
 
-    foreach ($sector_id as $l) {
+    foreach ($sector_id as $l) {//récupère l'état des checkbox des secteurs
         $checkbox = filter_input(INPUT_POST, "checkbox_sector_" . $l["id"]);
         if (isset($checkbox) == true) {
             $sector[] = $l["id"];
         }
     }
-    function checkSector($list_sector_check, $list_sector)
+
+    function checkSector($list_sector_check, $list_sector) //vérifie si les secteurs existe
     {
         if (count($list_sector_check) == 0) {
             return false;
@@ -42,7 +43,7 @@ if (isset($_SESSION["user_connect"])) {
         return true;
     }
 
-    function checkId($id, $conn)
+    function checkId($id, $conn) //vérifie si l'id de la campagne existe
     {
         if ($id == null or sqlCommand("SELECT count(*) FROM form WHERE id=:id", [":id" => $id], $conn)[0][0] == 1) {
             return true;
@@ -52,7 +53,7 @@ if (isset($_SESSION["user_connect"])) {
 
     $newCampaign = $data_post["campaign_id"] == null;
     $imagePost = $_FILES['add_file']['error'] != 4;
-    $checkFileResult = checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]);
+    $checkFileResult = checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]);//vérifie le fichier image
 
 
     if (checkLenString($data_post["organization"], 31) && checkLenString($data_post["event_name"], 127)
@@ -61,13 +62,13 @@ if (isset($_SESSION["user_connect"])) {
         && (($checkFileResult == true && $newCampaign == true) || ($checkFileResult == true && $imagePost == true) || ($imagePost == false && $newCampaign == false))
         && checkSector($sector, $sector_id) && checkId($data_post["campaign_id"], $conn)) {
 
-        if ($imagePost) {
+        if ($imagePost) {//renomme l'image
             $directoryDestination = "../../assets/img/";
             $newName = date("Y-m-d-H-i-s") . "_" . $data_post["organization"] . "-" . $data_post["event_name"];
             $name = moveFile("add_file", $directoryDestination, $newName, ["image/png", "image/jpg", "image/jpeg"]);
         }
 
-        if ($newCampaign == true) {
+        if ($newCampaign == true) {//vérifie s'il s'agit d'une nouvelle campagne
             sqlCommand("INSERT INTO form (title, description, image, color_primary, color_secondary,
             start_date, end_date, organisation) VALUES (:title, :description, :image, :color_primary,:color_secondary, :start_date, :end_date, :organization)",
                 [":title" => $data_post["event_name"], "description" => $data_post["description"], ":image" => $name,
@@ -83,7 +84,7 @@ if (isset($_SESSION["user_connect"])) {
             $_SESSION["id_campaign"] = $campaign_id;
             $_SESSION["error_message"] = "Campagne créer avec succès";
 
-        } else {
+        } else {//si c'est une modification d'un formulaire d'une campagne déjà existante
             $image = sqlCommand("SELECT image FROM form WHERE id=:campaign_id", ["campaign_id" => $data_post["campaign_id"]], $conn)[0]["image"];
             if ($imagePost == false) {
                 $name = $image;
@@ -104,19 +105,21 @@ if (isset($_SESSION["user_connect"])) {
             foreach ($request_sector_form_db as $element) {
                 $id = $element['id_sector'];
                 if (in_array($id, $sector)) {
+                    //secteurs ajouter au formulaire
                     $sector_form_id[] = $id;
                 } else {
+                    //secteur à supprimer du formulaire
                     $delete_sector_form[] = $id;
                 }
             }
             if (isset($delete_sector_form) == true) {
-                foreach ($delete_sector_form as $value) {
+                foreach ($delete_sector_form as $value) {//supprime l'association du secteur et du formulaire
                     sqlCommand("DELETE FROM form_sector WHERE id_form=:id_form AND id_sector = :id_sector", ["id_form" => $data_post["campaign_id"], "id_sector" => $value], $conn, false);
                 }
             }
 
             foreach ($sector as $s) {
-                if (in_array($s, $sector_form_id) == false) {
+                if (in_array($s, $sector_form_id) == false) {//créer une association entre le secteur et le formulaire
                     sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $data_post["campaign_id"], "id_sector" => $s], $conn, false);
                 }
             }
@@ -128,7 +131,7 @@ if (isset($_SESSION["user_connect"])) {
         $_SESSION["title_campaign"] = $data_post["event_name"];
         $_SESSION["start_campaign"] = $data_post["start_date"];
         $_SESSION["end_campaign"] = $data_post["end_date"];
-    } else {
+    } else { //message d'erreur
         $_SESSION["error"] = true;
         $_SESSION["error_message"] = "Impossible de créer la campagne, les données ne sont pas valide";
     }

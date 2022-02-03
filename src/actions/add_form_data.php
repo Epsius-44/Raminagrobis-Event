@@ -51,7 +51,7 @@ if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["first
     [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number-field"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn, false);
     header("Location: ../../?id=".$data["id"]."&register=success");
 }else{
-    $_SESSION["error"]=true;
+    $_SESSION["error"]=true;//afficher le message d'erreur en cas d'erreur
     $_SESSION["error_message"]="Les données envoyées ne sont pas valide, merci de remplir de nouveau le formulaire";
     header("Location: ../../?id=".$data["id"]);
 }
