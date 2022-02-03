@@ -16,7 +16,7 @@ if (isset($_SESSION["user_connect"])) {
     $id = filter_input(INPUT_POST, "id");
 
     if (checkLenString($new_name, 255) && sqlCommand("SELECT count(id) FROM sector WHERE id=:id", [":id" => $id], $conn)[0][0] == 1) {
-        sqlCommand("UPDATE sector SET name=:name WHERE id=:id", [":name" => $new_name, ":id" => $id], $conn);
+        sqlCommand("UPDATE sector SET name=:name WHERE id=:id", [":name" => $new_name, ":id" => $id], $conn, false);
         $_SESSION["error"] = false;
         $_SESSION["error_message"] = "Nom du secteur modifié avec succès";
     } else {

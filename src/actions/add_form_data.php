@@ -48,7 +48,7 @@ if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["first
     $score += (int)$data["number-field"]; //+1 par personne qui vient à l'événement
 
     sqlCommand("INSERT INTO form_data (civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_form, id_category) VALUES (:civility,:firstname,:lastname,:email,:tel_mob, :tel_fix, :type, :comp_name, :people_num, :news, :score, :id_form, :id_category)",
-    [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number-field"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn);
+    [":civility"=>$data["civility-field"],":firstname"=>$data["firstname-field"],":lastname"=>$data["lastname-field"],":email"=>$data["email-field"],":tel_mob"=>$data["mobile-field"], ":tel_fix"=>$data["fixe-field"], ":type"=>$data["peopleType-field"], ":comp_name"=>$data["compagny-field"], ":people_num"=>$data["number-field"], ":news"=>$data["news-field"], ":score"=>$score, ":id_form"=>$data["id"], ":id_category"=>$data["sector-field"]],$conn, false);
     header("Location: ../../?id=".$data["id"]."&register=success");
 }else{
     $_SESSION["error"]=true;

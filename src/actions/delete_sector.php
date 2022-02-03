@@ -15,7 +15,7 @@ if (isset($_SESSION["user_connect"])) {
         $nbr_use = sqlCommand("SELECT count(id_sector) FROM form_sector WHERE id_sector=:id", [":id" => $id], $conn)[0][0] +
             sqlCommand("SELECT count(id) from form_data WHERE id_category=:id", [":id" => $id], $conn)[0][0]; //vérification si le secteur est utilisé par un formulaire
         if ($nbr_use == 0) {
-            sqlCommand("DELETE FROM sector WHERE id=:id", [":id" => $id], $conn);
+            sqlCommand("DELETE FROM sector WHERE id=:id", [":id" => $id], $conn, false);
             $_SESSION["error"] = false;
             $_SESSION["error_message"] = "Secteur supprimé avec succès";
         } else {

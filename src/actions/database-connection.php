@@ -11,12 +11,15 @@ try {
         ");
 }
 
-function sqlCommand($cmd, $args, $sql)
+function sqlCommand($cmd, $args, $sql, $isSelect = true)
 {
     $request = $sql->prepare($cmd);
     foreach ($args as $key => &$value) {
         $request->bindParam($key, $value);
     }
     $request->execute();
-    return $request->fetchAll();
+    if ($isSelect){
+        return $request->fetchAll();
+    }
+    return true;
 }

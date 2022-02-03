@@ -72,13 +72,13 @@ if (isset($_SESSION["user_connect"])) {
             start_date, end_date, organisation) VALUES (:title, :description, :image, :color_primary,:color_secondary, :start_date, :end_date, :organization)",
                 [":title" => $data_post["event_name"], "description" => $data_post["description"], ":image" => $name,
                     ":color_primary" => $data_post["color_primary"], ":color_secondary" => $data_post["color_secondary"], ":start_date" => $data_post["start_date"],
-                    ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"]], $conn);
+                    ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"]], $conn, false);
 
             $campaign_id = sqlCommand("SELECT id FROM form ORDER BY id DESC LIMIT 1", [], $conn)[0]["id"];
 
 
             foreach ($sector as $s) {
-                sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $campaign_id, ":id_sector" => $s], $conn);
+                sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $campaign_id, ":id_sector" => $s], $conn, false);
             }
             $_SESSION["id_campaign"] = $campaign_id;
             $_SESSION["error_message"] = "Campagne créer avec succès";
@@ -96,7 +96,7 @@ if (isset($_SESSION["user_connect"])) {
                     start_date = :start_date, end_date = :end_date, organisation = :organization WHERE id = :campaign_id",
                 [":title" => $data_post["event_name"], "description" => $data_post["description"], ":image" => $name,
                     ":color_primary" => $data_post["color_primary"], ":color_secondary" => $data_post["color_secondary"], ":start_date" => $data_post["start_date"],
-                    ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"], ":campaign_id" => $data_post["campaign_id"]], $conn);
+                    ":end_date" => $data_post["end_date"], ":organization" => $data_post["organization"], ":campaign_id" => $data_post["campaign_id"]], $conn, false);
 
             $request_sector_form_db = sqlCommand("SELECT id_sector FROM form_sector WHERE id_form=:id_form", [":id_form" => $data_post["campaign_id"]], $conn);
 
@@ -111,13 +111,13 @@ if (isset($_SESSION["user_connect"])) {
             }
             if (isset($delete_sector_form) == true) {
                 foreach ($delete_sector_form as $value) {
-                    sqlCommand("DELETE FROM form_sector WHERE id_form=:id_form AND id_sector = :id_sector", ["id_form" => $data_post["campaign_id"], "id_sector" => $value], $conn);
+                    sqlCommand("DELETE FROM form_sector WHERE id_form=:id_form AND id_sector = :id_sector", ["id_form" => $data_post["campaign_id"], "id_sector" => $value], $conn, false);
                 }
             }
 
             foreach ($sector as $s) {
                 if (in_array($s, $sector_form_id) == false) {
-                    sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $data_post["campaign_id"], "id_sector" => $s], $conn);
+                    sqlCommand("INSERT INTO form_sector (id_form, id_sector) VALUES (:id_form, :id_sector)", ["id_form" => $data_post["campaign_id"], "id_sector" => $s], $conn, false);
                 }
             }
             $_SESSION["id_campaign"] = $data_post["campaign_id"];
