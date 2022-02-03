@@ -13,7 +13,7 @@ if (empty($result) or $today < $result[0]['start_date'] or $today > $result[0]['
     die("
         <main>
             <div class='container'>
-                <h1>Cet évènement n'existe pas !</h1>
+                <h1>Cet évènement n'existe pas !</h1> 
                 <p>Merci de vérifier l'URL entrée ainsi que la date de début et de fin des inscriptions à l'évènement.</p>
             </div>
         </main>
