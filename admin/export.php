@@ -13,10 +13,18 @@ header('Content-Encoding: UTF-8');
 header('Content-type: text/csv; charset=UTF-8');
 header('Content-Disposition: attachment; filename=CampaignExport_'.$form_id.'.csv');
 // Récupération des données
-$result = sqlCommand("SELECT * FROM form_data WHERE id_form=:form_id", [":form_id" => $form_id], $conn);
+$result = sqlCommand("SELECT d.*, s.name as category FROM `form_data` as d LEFT JOIN sector as s ON d.id_category = s.id WHERE d.id_form=:form_id", [":form_id" => $form_id], $conn);
+// Tableau de signification
+$civility = ["H", "F", "A"];
+$bool = ["Non", "Oui"];
 // Création de la première ligne avec les en-têtes
-echo "id; civility; firstname; lastname; email; tel_mob; tel_fix; type; comp_name; people_num; news; score; id_category\r\n";
+echo "id; civility; firstname; lastname; email; tel_mob; tel_fix; comp_name; category; people_num; news; score\r\n";
 // Création des lignes de données
 foreach ($result as $r){
-    echo $r['id'].";".clean($r['civility']).";".clean($r['firstname']).";".clean($r['lastname']).";".clean($r['email']).";".clean($r['tel_mob']).";".clean($r['tel_fix']).";".$r['type'].";".clean($r['comp_name']).";".clean($r['people_num']).";".clean($r['news']).";".clean($r['score']).";".clean($r['id_category'])."\r\n";
+    $ligne = clean($r['id']).";";
+    $ligne = $ligne.$civility[$r['civility']].";".clean($r['firstname']).";".clean($r['lastname']).";";
+    $ligne = $ligne.clean($r['email']).";".clean($r['tel_mob']).";".clean($r['tel_fix']).";";
+    $ligne = $ligne.(($r['type']==0) ? "/;/;" : clean($r['comp_name']).";".clean($r['category']).";");
+    $ligne = $ligne.clean($r['people_num']).";".$bool[$r['news']].";".clean($r['score'])."\r\n";
+    echo $ligne;
 }
