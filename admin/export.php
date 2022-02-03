@@ -1,7 +1,7 @@
 <?php
 // Récupération de l'id du formulaire souhaiter
 $form_id = filter_input(INPUT_GET, "id");
-if (isset($form_id)){
+if (isset($form_id)){//page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
     $redirect = "campaign_data.php?id=$form_id";
 }
 include_once "../src/actions/checkConnectionAdmin.php";

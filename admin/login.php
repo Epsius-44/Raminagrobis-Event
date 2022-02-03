@@ -2,9 +2,9 @@
 include_once "../src/actions/security_token.php";
 $title = "Connexion";
 $class = "d-flex p-2 flex-column";
-$navbar = false;
+$navbar = false; //cache la navbar
 include "../src/layout/headerAdmin.php";
-if (isset($_SESSION["error_message_connection"])){
+if (isset($_SESSION["error_message_connection"])){//vérifie si une erreur est survenue lors d'une tentative de connexion
     $error_message = $_SESSION["error_message_connection"];
     $error = true;
     unset($_SESSION["error_message_connection"]);
@@ -45,7 +45,7 @@ if (isset($_SESSION["error_message_connection"])){
                     <span class="fas fa-sign-in-alt"></span> Se connecter
                 </button>
             </form>
-            <?php if($error){
+            <?php if($error){ //afficher le message d'erreur s'il y a eu une erreur
                 echo "<div class='alert alert-danger'><p><span class='fal fa-exclamation-triangle'></span> $error_message</p></div>";
             } ?>
         </div>

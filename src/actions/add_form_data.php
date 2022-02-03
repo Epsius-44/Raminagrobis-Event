@@ -5,12 +5,12 @@ include_once "database-connection.php";
 include_once "function.php";
 
 
-function checkSector($sector_id, $conn)
+function checkSector($sector_id, $conn) //vérifie si le secteur existe
 {
     return (sqlCommand("SELECT count(id) FROM sector WHERE id=:sector_id", [":sector_id" => $sector_id], $conn)[0][0] == 1);
 }
 
-function checkForm($id, $conn)
+function checkForm($id, $conn) //vérifie les dates du formulaire
 {
     $form_data = sqlCommand("SELECT start_date,end_date FROM form WHERE id=:id", [":id" => $id], $conn)[0];
     $today = date("Y-m-d");
@@ -23,8 +23,8 @@ function checkForm($id, $conn)
 
 $data = getPost(["civility-field", "firstname-field", "lastname-field", "email-field", "mobile-field", "fixe-field", "peopleType-field", "sector-field", "compagny-field", "news-field", "rgpd-field", "id","number-field"]);
 
-if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["firstname-field"], 255) and checkLenString($data["lastname-field"], 255) and checkEmail($data["email-field"]) and checkForm($data["id"],$conn) and checkInt((int)$data["number-field"],1,999) and
-    checkMobil($data["mobile-field"]) and checkFix($data["fixe-field"]) and (checkboxCheck($data["peopleType-field"]==0) or (checkboxCheck($data["peopleType-field"]==1) and checkSector($data["sector-field"], $conn) and checkLenString($data["compagny-field"], 255))) and checkboxCheck("rgpd-field")==1) {
+if (checkInt((int)$data["civility-field"], 0, 2) and checkLenString($data["firstname-field"], 32) and checkLenString($data["lastname-field"], 32) and checkEmail($data["email-field"]) and checkLenString($data["email-field"],50) and checkForm($data["id"],$conn) and checkInt((int)$data["number-field"],1,999) and
+    checkMobil($data["mobile-field"]) and checkFix($data["fixe-field"]) and (checkboxCheck($data["peopleType-field"]==0) or (checkboxCheck($data["peopleType-field"]==1) and checkSector($data["sector-field"], $conn) and checkLenString($data["compagny-field"], 32))) and checkboxCheck("rgpd-field")==1) {
     $data["news-field"] = checkboxCheck($data["news-field"]); //transforme la valeur news-field qui est égal à null ou on en 0 ou 1
     $data["peopleType-field"] = checkboxCheck($data["peopleType-field"]);
 

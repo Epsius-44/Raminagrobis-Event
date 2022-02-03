@@ -1,4 +1,4 @@
-<?php
+<?php //page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
 $search = filter_input(INPUT_GET, 'search');
 if (isset($search)) {
     $redirect = basename(__FILE__)."?search=$search";
@@ -19,10 +19,11 @@ if (isset($search)) {
 ?>
     <section>
         <?php if (isset($_SESSION["error"])) {
+            //afficher le message de l'erreur / succès
             if ($_SESSION["error"]) {
-                echo "<div class='alert alert-danger'>";
+                echo "<div class='alert alert-danger'>"; //si erreur
             } else {
-                echo "<div class='alert alert-success'>";
+                echo "<div class='alert alert-success'>"; //si succès
             }
             echo $_SESSION["error_message"] . "</div>";
             unset($_SESSION["error"]);
@@ -84,7 +85,7 @@ if (isset($search)) {
                     <div class="input-group mb-3">
                         <div class="form-floating">
                             <input type="text" name="name" placeholder="Secteur" id="add_sector" class="form-control"
-                                   maxlength="255" required> <!-- nommage du secteur -->
+                                   maxlength="30" required> <!-- nommage du secteur -->
                             <label for="add_sector">Nom du secteur</label>
                         </div>
                         <input type="hidden" name="token" value="<?= $token ?>">

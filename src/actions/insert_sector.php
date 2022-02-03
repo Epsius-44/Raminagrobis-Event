@@ -14,8 +14,8 @@ if (isset($_SESSION["user_connect"])) {
 //récupération du nom du secteur
     $name = filter_input(INPUT_POST, "name");
 
-    if (checkLenString($name, 255)) {
-        sqlCommand("INSERT INTO sector (name) VALUES (:name)", [":name" => $name], $conn, false);
+    if (checkLenString($name, 30)) {
+        sqlCommand("INSERT INTO sector (name) VALUES (:name)", [":name" => $name], $conn,false);
         $_SESSION["error"] = false;
         $_SESSION["error_message"] = "Secteur ajouté avec succès";
     } else {

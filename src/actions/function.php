@@ -169,7 +169,7 @@ function modalBodyFormRenameSector($sector_name, $id, $token)
             <div class='form-floating'>
                 <input type='text' placeholder='Nom du secteur' name='new_name'
                        id='sector_$id' class='form-control'
-                       maxlength='255' required>
+                       maxlength='30' required>
                 <label for='sector_$id'>Nouveau nom</label>
             </div>
             <input type='hidden' name='token' value='$token'>

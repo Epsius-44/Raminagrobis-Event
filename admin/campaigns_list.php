@@ -1,7 +1,7 @@
 <?php
 $title = "Liste des campagnes";
 $search = filter_input(INPUT_GET, 'search');
-if (isset($search)){
+if (isset($search)){//page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
     $redirect = basename(__FILE__)."?search=".$search;
 }else{
     $redirect = basename(__FILE__);
@@ -13,12 +13,14 @@ include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 
 $modalPrint = false;
-if (isset($_SESSION["error"])) {
-    if ($_SESSION["error"]) { ?>
+if (isset($_SESSION["error"])) { //vérifie si une erreur est survenue (cela peut aussi être un succès)
+    if ($_SESSION["error"]) { //vérifie s'il s'agit d'une erreur ou d'un succès?>
+            <!--erreur-->
         <div class="alert alert-danger">
             <?= $_SESSION["error_message"] ?>
         </div>
     <?php } else {
+        //succès
         $modalPrint = true;
         //création d'une popup pour afficher le lien du formulaire qui vient d'être créer
         modalBodyLink("modalCampaignSuccess",$_SESSION["error_message"],"success",$_SESSION["title_campaign"],$_SESSION["start_campaign"],$_SESSION["end_campaign"],$_SESSION["id_campaign"]);
@@ -35,6 +37,7 @@ if (isset($_SESSION["error"])) {
 
 $search = filter_input(INPUT_GET, 'search');
 if (isset($search)) {
+    //recherche avec le filtre demandé par l'utilisateur
     $campaigns_list = sqlCommand("SELECT id,title,description,start_date,end_date,organisation FROM form WHERE title LIKE :search OR description LIKE :search OR organisation LIKE :search", [":search" => "%" . $search . "%"], $conn);
 } else {
     $campaigns_list = sqlCommand("SELECT id,title,description,start_date,end_date,organisation FROM form", [], $conn);
@@ -49,7 +52,7 @@ $today = date("Y-m-d");
 
 
 
-    <table class="table table-striped ">
+    <table class="table table-striped "> <!--liste des campagnes-->
         <thead>
         <tr class="text-center">
             <th scope="col">ID</th>
@@ -71,7 +74,7 @@ $today = date("Y-m-d");
             </tr>
             <?php
         } else {
-            foreach ($campaigns_list as $data) {
+            foreach ($campaigns_list as $data) { //ajout d'une ligne pour chaque campagne
                 ?>
                 <tr class="text-center">
                     <th scope="row"><?= dataDBSafe($data["id"]) ?></th>

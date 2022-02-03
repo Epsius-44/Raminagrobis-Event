@@ -55,7 +55,7 @@ if (isset($_SESSION["user_connect"])) {
     $checkFileResult = checkFile("add_file", ["image/png", "image/jpg", "image/jpeg"]);
 
 
-    if (checkLenString($data_post["organization"], 31) && checkLenString($data_post["event_name"], 255)
+    if (checkLenString($data_post["organization"], 31) && checkLenString($data_post["event_name"], 127)
         && checkLenString($data_post["description"], 65535) && checkLenString($data_post["color_primary"], 6, 6)
         && checkLenString($data_post["color_secondary"], 6, 6) && verifDate($data_post["start_date"], $data_post["end_date"])
         && (($checkFileResult == true && $newCampaign == true) || ($checkFileResult == true && $imagePost == true) || ($imagePost == false && $newCampaign == false))

@@ -1,4 +1,4 @@
-<?php
+<?php //page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
 $campaign_id = filter_input(INPUT_GET, "id");
 if (isset($campaign_id)){
     $redirect = basename(__FILE__)."?id=".$campaign_id;
@@ -10,20 +10,23 @@ include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 include_once "../src/actions/function.php";
 
-$sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn);
+$sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn); //liste des secteurs d'activités
 if (isset($campaign_id) == true) {
+    //modification d'une campagne
     $data = sqlCommand("SELECT * FROM form WHERE id = :campaign_id", [":campaign_id" => $campaign_id], $conn);
-    if (count($data) == 0) {
-        header("Location: ./campaign.php");
+    if (count($data) == 0) {//vérifie si la campagne existe
+        header("Location: ./campaign.php"); //si non, la page se rafraichit sans l'id campagne et donc la page pour créer une campagne
     }
     $campaign_data = $data[0];
-    $sectorSelect = sqlCommand("SELECT id_sector FROM form_sector WHERE id_form = :campaign_id", [":campaign_id" => $campaign_id], $conn);
+    $sectorSelect = sqlCommand("SELECT id_sector FROM form_sector WHERE id_form = :campaign_id", [":campaign_id" => $campaign_id], $conn); //attribue les valeurs par défaut pour l'autocomplétion
     $sector_checked = [];
     foreach ($sectorSelect as $sector) {
         $sector_checked[] = $sector[0];
     }
     $title = "Modification formulaire";
 } else {
+    //ajout d'une campagne
+    //attribue
     $title = "Nouveau formulaire";
     $sector_checked = [];
     $campaign_data['organisation'] = "";
@@ -44,7 +47,7 @@ include "../src/layout/headerAdmin.php";
             <div class="container-form">
                 <form class="row needs-validation" novalidate action="../src/actions/add_modify_campaign.php" id="campaign" name="campaign"
                       method="POST" enctype="multipart/form-data">
-                    <div class="form-floating mb-4 col-md-6">
+                    <div class="form-floating mb-4 col-md-6"> <!--nom de l'entreprise-->
                         <input type="text"
                                class="form-control"
                                id="organization"
@@ -55,18 +58,18 @@ include "../src/layout/headerAdmin.php";
                                required>
                         <label for="organization">nom de l'organisation</label>
                     </div>
-                    <div class="form-floating mb-4 col-md-6">
+                    <div class="form-floating mb-4 col-md-6"><!--nom de l'évènement-->
                         <input type="text"
                                class="form-control"
                                id="event_name"
                                name="event_name"
                                value="<?php echo $campaign_data['title']; ?>"
-                               maxlength="255"
+                               maxlength="127"
                                placeholder="nom de l'évènement"
                                required>
                         <label for="event_name">nom de l'évènement</label>
                     </div>
-                    <div class="form-floating mb-4 col-12">
+                    <div class="form-floating mb-4 col-12"><!--description de l'évènement-->
                             <textarea class="form-control"
                                       name="description"
                                       id="description"
@@ -78,7 +81,7 @@ include "../src/layout/headerAdmin.php";
                             ><?php echo $campaign_data['description']; ?></textarea>
                         <label for="description">description</label>
                     </div>
-                    <div class="input-group mb-1 col-12">
+                    <div class="input-group mb-1 col-12"><!--image-->
                         <label class="input-group-text" for="add_file">bannière (taille max: 2Mo)</label>
                         <input type="file"
                                class="form-control"
@@ -91,10 +94,7 @@ include "../src/layout/headerAdmin.php";
                     </div>
                     <p class="visually-hidden text-danger mt-1" id="text-file">Le fichier sélectionner a une taille
                         supérieur à 2Mo</p>
-                    <div class="preview align">
-
-                    </div>
-                    <div class="input-group my-4 col-12">
+                    <div class="input-group my-4 col-12"><!--couleur primaire du formulaire-->
                         <label class="input-group-text col-md-2" for="color_primary">Couleur primaire</label>
                         <input type="color"
                                class="form-control form-control-color"
@@ -102,7 +102,7 @@ include "../src/layout/headerAdmin.php";
                                name="color_primary"
                                value="<?php echo '#' . $campaign_data['color_primary']; ?>">
                     </div>
-                    <div class="input-group mb-4 col-12">
+                    <div class="input-group mb-4 col-12"><!--couleur secondaire du formulaire-->
                         <label class="input-group-text col-md-2" for="color_secondary">Couleur secondaire</label>
                         <input type="color"
                                class="form-control form-control-color"
@@ -110,7 +110,7 @@ include "../src/layout/headerAdmin.php";
                                name="color_secondary"
                                value="<?php echo '#' . $campaign_data['color_secondary']; ?>">
                     </div>
-                    <div class="form-floating mb-5 col-md-6">
+                    <div class="form-floating mb-5 col-md-6"><!--date du début du formulaire-->
                         <input type="date"
                                class="form-control"
                                id="start_date"
@@ -121,7 +121,7 @@ include "../src/layout/headerAdmin.php";
                                required>
                         <label for="start_date">date de début du formulaire (à 00h00)</label>
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
+                    <div class="form-floating mb-3 col-md-6"><!--date de fin du formulaire-->
                         <input type="date"
                                class="form-control"
                                id="end_date"
@@ -132,7 +132,7 @@ include "../src/layout/headerAdmin.php";
                         <label for="end_date">date de fin du formulaire (à 23h59)</label>
                         <div class="invalid-feedback">Vous devez sélectionner une date de fin qui correspond, soit à la même date que la date de début, soit à une date ultérieur</div>
                     </div>
-                    <fieldset class="form-control">
+                    <fieldset class="form-control"><!--sélection des secteurs d'activités de l'évènement-->
                         <legend>Secteur d'activité</legend>
                         <?php
                         $item = 6;
@@ -176,7 +176,7 @@ include "../src/layout/headerAdmin.php";
     var count_checkbox = countCheckebox()
     validateCheckbox()
 
-    function checkbox_count (input) {
+    function checkbox_count (input) {//ajoute 1 ou -1 en fonction de si le secteur d'activité est coché
         if (input.checked) {
             count_checkbox ++;
         }else{
@@ -185,7 +185,7 @@ include "../src/layout/headerAdmin.php";
         validateCheckbox()
     }
 
-    function validateCheckbox () {
+    function validateCheckbox () {//vérifie si au moins une checkbox est cochée
         if (count_checkbox >= 1 && checkbox.hasAttribute("required")){
             checkbox.removeAttribute("required");
         }else if (count_checkbox === 0 && checkbox.hasAttribute("required") === false){
@@ -196,7 +196,7 @@ include "../src/layout/headerAdmin.php";
     var uploadField = document.getElementById("add_file");
 
     uploadField.onchange = function () {
-        if (this.files[0].size > 2097152) {
+        if (this.files[0].size > 2097152) {//vérifie la taille de l'image
             document.getElementById("text-file").className = "text-danger mt-1";
             this.value = "";
         } else {
@@ -209,7 +209,7 @@ include "../src/layout/headerAdmin.php";
     input.addEventListener('change', updateImageDisplay);
 
 
-    function updateImageDisplay() {
+    function updateImageDisplay() {//affiche l'image
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
@@ -226,12 +226,12 @@ include "../src/layout/headerAdmin.php";
     }
 
 
-    function updateTextareaHeight(input) {
+    function updateTextareaHeight(input) {//adapte la taille du textarea pour la description de l'évènement
         input.style.height = 'auto';
         input.style.height = (input.scrollHeight + 2) + 'px';
     }
 
-    function countCheckebox() {
+    function countCheckebox() {//compte le nombre de checkbox cochée
         var elements = document.getElementsByClassName("group-checkbox"), i, count = 0;
         for (i = 0; i < elements.length; i++) {
             if (elements[i].checked) {
@@ -242,7 +242,7 @@ include "../src/layout/headerAdmin.php";
         return count;
     }
 
-    function minDate() {
+    function minDate() {//change la date minimum de fin du formulaire afin qu'elle soit égale ou supérieur à la date du début
         var element = document.getElementById("end_date");
         element.setAttribute("min", document.getElementById("start_date").value)
     }

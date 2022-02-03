@@ -26,7 +26,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
     <section id="home-hero" style="background-color: <?php echo "#".$result['color_primary']; ?>">
         <div class="form-header" style="background: rgba(0, 0, 0, 0.5) url('./assets/img/<?php echo $result['image']; ?>') center;background-size: cover;">
             <h1>🎫 <?php echo $result['title']; ?></h1>
-            <p><?= $result['description'] ?></p>
+            <p><?= dataDBSafe($result['description']) ?></p>
             <hr>
             <h2>Organisé par 🏢 <?php echo dataDBSafe($result['organisation']); ?></h2>
         </div>
@@ -58,6 +58,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                    id="firstname-field"
                                    placeholder="Camille"
                                    class="form-control"
+                                   maxlength="32"
                                    required>
                         </div>
                         <div class="col-form" style="flex-grow: 3;">
@@ -68,6 +69,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                    id="lastname-field"
                                    placeholder="Dupont"
                                    class="form-control"
+                                   maxlength="32"
                                    required>
                         </div>
                     </div>
@@ -78,6 +80,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                            id="email-field"
                            placeholder="camille@dupont.fr"
                            class="form-control"
+                           maxlength="50"
                            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                            required>
                     <div class="inline-form">
@@ -128,6 +131,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                             <label for="compagny-field" id="compagny-label" class="hidden" hidden>🏭 Nom de l'entreprise
                                 (*)</label>
                             <input type="text"
+                                   maxlength="32"
                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
                                    name="compagny-field"
                                    id="compagny-field"

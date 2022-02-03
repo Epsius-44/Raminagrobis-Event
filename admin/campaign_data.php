@@ -2,7 +2,7 @@
 $title = "Données formulaire";
 $id = filter_input(INPUT_GET, 'id');
 $search = filter_input(INPUT_GET, 'search');
-if (isset($id)) {
+if (isset($id)) {//page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
     $redirect = basename(__FILE__) . "?id=" . $id;
     if (isset($search)){
         $redirect = $redirect."&search=$search";
@@ -18,12 +18,11 @@ include_once "../src/actions/database-connection.php";
 $id = filter_input(INPUT_GET, 'id');
 if (isset($id)) {
     $exist = sqlCommand("SELECT count(id) FROM form WHERE id=:id", [":id" => $id], $conn)[0]['count(id)'];
-    if ($exist != 1) {
-        echo "<div class='container'><h1>Cette campagne n'existe pas</h1><br><a href='campaigns_list.php' class='btn btn-primary'>Liste des campagnes</a></div>";
-    } else {
-        $form_data = sqlCommand("SELECT title,start_date,end_date FROM form WHERE id=:id", [":id" => $id], $conn)[0];
+    if ($exist != 1) { //si la campagne n'existe pas
+        echo "<div class='container'><h1>Cette campagne n'existe pas</h1><br><a href='campaigns_list.php' class='btn btn-primary'>Liste des campagnes</a></div>"; //bouton de redirection vers la liste de redirection
+    } else { //si la campagne existe
+        $form_data = sqlCommand("SELECT title,start_date,end_date FROM form WHERE id=:id", [":id" => $id], $conn)[0]; //récupère les données des formulaires
         $file = $id . "-" . $form_data["title"] . ".csv";
-
         if (isset($search)) {
             $campaign_data = sqlCommand("SELECT civility, firstname, lastname, email, tel_mob, tel_fix, type, comp_name, people_num, news, score, id_category FROM form_data WHERE id_form=:id AND (
 firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix LIKE :search OR tel_mob LIKE :search)", [":id" => $id, ":search" => "%" . $search . "%"], $conn);
@@ -42,9 +41,7 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
 
             <?php searchData('Donnée du formulaire "' . $form_data["title"] . '"', $search, "campaign_data.php", "campaign_data.php?id=" . dataDBSafe($id), dataDBSafe($id)) ?>
 
-
-            </form>
-            <table class="table table-striped">
+            <table class="table table-striped"><!-- tableau avec les données-->
                 <thead>
                 <tr>
                     <th scope="col">Genre</th>
@@ -68,8 +65,7 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
                     </tr>
                     <?php
                 } else {
-                    foreach ($campaign_data as $data) {
-
+                    foreach ($campaign_data as $data) { //ajoute une ligne au tableau pour chaque donnée du formulaire
                         ?>
                         <tr>
                             <td class="table-list"><?php
