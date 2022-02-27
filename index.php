@@ -27,7 +27,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
     <section id="home-hero" style="background-color: <?php echo "#".$result['color_primary']; ?>">
         <div class="form-header" style="background: rgba(0, 0, 0, 0.5) url('./assets/img/<?php echo $result['image']; ?>') center;background-size: cover;">
             <h1>🎫 <?php echo $result['title']; ?></h1>
-            <p><?= dataDBSafe($result['description']) ?></p>
+            <p><?php echo nl2br(dataDBSafe($result['description'])) ?></p>
             <hr>
             <h2>Organisé par 🏢 <?php echo dataDBSafe($result['organisation']); ?></h2>
         </div>
