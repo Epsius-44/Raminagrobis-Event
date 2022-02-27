@@ -1,5 +1,6 @@
-<footer id="footer">
-    <div class="container">
+</main>
+<footer id="footer" class="mt-5">
+    <div class="container my-3 text-center">
         <span>
             <?php
             if (date("Y") != 2021) {
