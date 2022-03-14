@@ -86,7 +86,7 @@ function url_campaign($id, $level) //retourne l'URL de la campagne
     return ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http') . "://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER["REQUEST_URI"], $level) . "/?id=" . $id);
 }
 
-function dataDBSafe($data) //sécurise un string pour éviter l'injection de code
+function textSafe($data) //sécurise un string pour éviter l'injection de code à travers l'affichage d'un texte en php
 {
     return htmlspecialchars($data, ENT_SUBSTITUTE, 'UTF-8');
 }
@@ -114,11 +114,11 @@ function searchInput($search, $link1, $link2, $inputIdHidden = null) //HTML pour
     echo "</div></form>";
 }
 
-function searchData($title, $search, $link1, $link2, $inputHidden = null) //affichage du titre de la page + "résultat de la requête"
+function searchTitle($title, $search, $link1, $link2, $inputHidden = null) //affichage du titre de la page + "résultat de la requête"
 {
     echo "<h1>" . $title . "</h1>";
     if (isset($search) and $search != "") {
-        echo "<h2>Résultat de la recherche '" . dataDBSafe($search) . "'</h2>";
+        echo "<h2>Résultat de la recherche '" . textSafe($search) . "'</h2>";
     }
     searchInput($search, $link1, $link2, $inputHidden);
 }
@@ -162,7 +162,7 @@ function modalBodyFormRenameSector($sector_name, $id, $token) //corps de la popu
     modalTop("modalRenameSector" . $id);
     echo "<form action='../src/actions/modify_name_sector.php' class='needs-validation' method='post' novalidate>
         <div class='modal-header'>
-            <h5 class='modal-title'>Modifier le nom du secteur \"" . dataDBSafe($sector_name) . "\"</h5>
+            <h5 class='modal-title'>Modifier le nom du secteur \"" . textSafe($sector_name) . "\"</h5>
             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
         </div>
         <div class='modal-body'>
@@ -191,13 +191,13 @@ function modalBodyFormDeleteSector($sector_name, $id, $token) //corps de la popu
     echo "<form action='../src/actions/delete_sector.php' method='post'>
         <div class='modal-header'>
             <h5 class='modal-title'>Suppression du
-                secteur \"" . dataDBSafe($sector_name) . "\"</h5>
+                secteur \"" . textSafe($sector_name) . "\"</h5>
             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
         </div>
         <div class='modal-body'>
             <div class='form-floating'>
                 <p class='text-danger'>Souhaitez-vous vraiment supprimer le secteur
-                    \"" . dataDBSafe($sector_name) . "\" ?<br><br>
+                    \"" . textSafe($sector_name) . "\" ?<br><br>
                     <span class='far fa-exclamation-triangle'></span>
                     La suppression échouera si celui-ci a été sélectionné comme l'un des secteurs d'activité
                     d'un formulaire
@@ -225,7 +225,7 @@ echo "
                 aria-label='Close'></button>
     </div>
     <div class='modal-body'>
-        Le lien de la campagne \"".dataDBSafe($title)."\" (valide
+        Le lien de la campagne \"".textSafe($title)."\" (valide
         du ".date("d/m/Y", strtotime($start))." à 00h00
         au ".date("d/m/Y", strtotime($end))." à 23h59) est :
         <input id='azerty' type='text' class='form-control' readonly

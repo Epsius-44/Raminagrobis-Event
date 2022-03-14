@@ -45,6 +45,7 @@ if (isset($_SESSION["error_message_connection"])){//vérifie si une erreur est s
                     <span class="fas fa-sign-in-alt"></span> Se connecter
                 </button>
             </form>
+            <?php var_dump($_SESSION) ?>
             <?php if($error){ //afficher le message d'erreur s'il y a eu une erreur
                 echo "<div class='alert alert-danger'><p><span class='fal fa-exclamation-triangle'></span> $error_message</p></div>";
             } ?>

@@ -32,14 +32,14 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
         ?>
         <div class="container">
             <div class="z-flex mb-4 mt-5">
-                <a href="./export.php?id=<?= dataDBSafe($id); ?>" class="btn btn-success"><span
+                <a href="./export.php?id=<?= textSafe($id); ?>" class="btn btn-success"><span
                             class="fad fa-download"></span> Télécharger les données</a>
                 <button class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#modalLink"><span class="fad fa-link"></span> Lien du formulaire
                 </button>
             </div>
 
-            <?php searchData('Donnée du formulaire "' . $form_data["title"] . '"', $search, "campaign_data.php", "campaign_data.php?id=" . dataDBSafe($id), dataDBSafe($id)) ?>
+            <?php searchTitle('Donnée du formulaire "' . $form_data["title"] . '"', $search, "campaign_data.php", "campaign_data.php?id=" . textSafe($id), textSafe($id)) ?>
 
             <table class="table table-striped"><!-- tableau avec les données-->
                 <thead>
@@ -81,31 +81,31 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
                                         break;
                                 }
                                 ?></td>
-                            <td class="table-list"><?= dataDBSafe($data["firstname"]) ?></td>
-                            <td class="table-list"><?= dataDBSafe($data["lastname"]) ?></td>
-                            <td><?= ($data["email"]==null)?"/":dataDBSafe($data["email"]) ?></td>
-                            <td><?= ($data["tel_mob"]==null)?"/":dataDBSafe($data["tel_mob"]) ?></td>
-                            <td><?= ($data["tel_fix"]==null)?"/":dataDBSafe($data["tel_fix"]) ?></td>
+                            <td class="table-list"><?= textSafe($data["firstname"]) ?></td>
+                            <td class="table-list"><?= textSafe($data["lastname"]) ?></td>
+                            <td><?= ($data["email"]==null)?"/":textSafe($data["email"]) ?></td>
+                            <td><?= ($data["tel_mob"]==null)?"/":textSafe($data["tel_mob"]) ?></td>
+                            <td><?= ($data["tel_fix"]==null)?"/":textSafe($data["tel_fix"]) ?></td>
                             <td><?php if ($data["type"] == 1) {
                                     $sector = sqlCommand("SELECT name FROM sector WHERE id=:id", [":id" => $data["id_category"]], $conn)[0]["name"];
-                                    echo dataDBSafe($data["comp_name"]) . "</td><td>" . dataDBSafe($sector);
+                                    echo textSafe($data["comp_name"]) . "</td><td>" . textSafe($sector);
                                 } else {
                                     echo "/</td><td>/";
                                 } ?></td>
-                            <td><?= dataDBSafe($data["people_num"]) ?></td>
+                            <td><?= textSafe($data["people_num"]) ?></td>
                             <td><?php if ($data["news"] == 1) {
                                     echo "Inscrit";
                                 } else {
                                     echo "Non";
                                 } ?></td>
-                            <td><?= dataDBSafe($data["score"]) ?></td>
+                            <td><?= textSafe($data["score"]) ?></td>
                         </tr>
                     <?php }
                 } ?>
                 </tbody>
             </table>
         </div>
-        <?php modalBodyLink("modalLink", "Lien du formulaire", "light", $form_data["title"], $form_data["start_date"], $form_data["end_date"], dataDBSafe($id)); ?>
+        <?php modalBodyLink("modalLink", "Lien du formulaire", "light", $form_data["title"], $form_data["start_date"], $form_data["end_date"], textSafe($id)); ?>
         <div class="modal fade" id="modalLink"
              data-bs-keyboard="false" tabindex="-1">
             <!-- création d'une popup pour afficher le lien d'un formulaire -->
@@ -117,7 +117,7 @@ firstname LIKE :search OR lastname LIKE :search OR email LIKE :search OR tel_fix
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Le lien de la campagne "<?= dataDBSafe($form_data["title"]); ?>" (valide
+                        Le lien de la campagne "<?= textSafe($form_data["title"]); ?>" (valide
                         du <?= date("d/m/Y", strtotime($form_data["start_date"])) ?> à 00h00
                         au <?= date("d/m/Y", strtotime($form_data["end_date"])) ?> est :
                         <input id="azerty" type="text" class="form-control" readonly

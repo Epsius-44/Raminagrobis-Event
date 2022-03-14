@@ -27,9 +27,9 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
     <section id="home-hero" style="background-color: <?php echo "#".$result['color_primary']; ?>">
         <div class="form-header" style="background: rgba(0, 0, 0, 0.5) url('./assets/img/<?php echo $result['image']; ?>') center;background-size: cover;">
             <h1>🎫 <?php echo $result['title']; ?></h1>
-            <p><?= dataDBSafe($result['description']) ?></p>
+            <p><?= textSafe($result['description']) ?></p>
             <hr>
-            <h2>Organisé par 🏢 <?php echo dataDBSafe($result['organisation']); ?></h2>
+            <h2>Organisé par 🏢 <?php echo textSafe($result['organisation']); ?></h2>
         </div>
         <div class="container">
             <?php if(isset($register)==false or $register!="success"){?>
@@ -41,7 +41,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;"><!--champ civilité-->
                             <label for="civility-field">🧑 Civilité (*)</label>
                             <select name="civility-field"
-                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                    style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                     id="civility-field"
                                     class="form-control"
                                     required>
@@ -54,7 +54,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 3;"><!--champ prénom-->
                             <label for="firstname-field">🧑 Prénom (*)</label>
                             <input type="text"
-                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                    name="firstname-field"
                                    id="firstname-field"
                                    placeholder="Camille"
@@ -65,7 +65,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 3;"><!--nom-->
                             <label for="lastname-field">🧑 Nom (*)</label>
                             <input type="text"
-                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                    name="lastname-field"
                                    id="lastname-field"
                                    placeholder="Dupont"
@@ -76,7 +76,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                     </div>
                     <label for="email-field">📧 E-mail (*)</label><!--champ email-->
                     <input type="email"
-                           style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                           style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                            name="email-field"
                            id="email-field"
                            placeholder="camille@dupont.fr"
@@ -88,7 +88,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;"><!--champ téléphone mobile-->
                             <label for="mobile-field">📞 Téléphone Mobile</label>
                             <input type="tel"
-                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                    pattern="^0[6-7]\d{8}$|^$"
                                    name="mobile-field"
                                    id="mobile-field"
@@ -98,7 +98,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;"><!--champ téléphone fixe-->
                             <label for="fixe-field">📞 Téléphone Fixe</label>
                             <input type="tel"
-                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                    pattern="^0[1-59]\d{8}$|^$"
                                    name="fixe-field"
                                    id="fixe-field"
@@ -115,14 +115,14 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                         <div class="col-form" style="flex-grow: 1;"><!--champ du secteur d'activité de l'entreprise-->
                             <label for="sector-field" id="sector-label" class="hidden" hidden>🎯 Secteur (*)</label>
                             <select name="sector-field"
-                                    style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                    style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                     id="sector-field"
                                     hidden>
                                 <option value="" selected disabled>Choisir un secteur d'activité</option>
                                 <?php
                                 foreach ($sector as $s) {
                                     ?>
-                                    <option value="<?= $s['id'] ?>"><?= dataDBSafe($s['name']) ?></option>
+                                    <option value="<?= $s['id'] ?>"><?= textSafe($s['name']) ?></option>
                                     <?php
                                 }
                                 ?>
@@ -133,7 +133,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                                 (*)</label>
                             <input type="text"
                                    maxlength="32"
-                                   style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                                   style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                                    name="compagny-field"
                                    id="compagny-field"
                                    placeholder="Raminagrobis"
@@ -145,7 +145,7 @@ $sector = sqlCommand("SELECT sector.id, sector.name FROM form_sector JOIN sector
                     <input type="number"
                            value="1"
                            name="number-field"
-                           style="border-bottom: 1px solid <?php echo "#" . dataDBSafe($result['color_secondary']); ?>"
+                           style="border-bottom: 1px solid <?php echo "#" . textSafe($result['color_secondary']); ?>"
                            id="number-field"
                            class="form-control"
                            min="1"

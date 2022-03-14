@@ -48,7 +48,7 @@ $today = date("Y-m-d");
 
 <div class="container-xxl mt-5 mb-3">
 
-    <?php searchData("Liste des campagnes", $search, "campaigns_list.php","campaigns_list.php") ?>
+    <?php searchTitle("Liste des campagnes", $search, "campaigns_list.php","campaigns_list.php") ?>
 
 
 
@@ -77,12 +77,12 @@ $today = date("Y-m-d");
             foreach ($campaigns_list as $data) { //ajout d'une ligne pour chaque campagne
                 ?>
                 <tr class="text-center">
-                    <th scope="row"><?= dataDBSafe($data["id"]) ?></th>
-                    <td class="table-list"><?= dataDBSafe($data["title"]) ?></td>
-                    <td class="table-list"><?= dataDBSafe($data["organisation"]) ?></td>
-                    <td class="table-list"><?= dataDBSafe($data["description"]) ?></td>
-                    <td><?= dataDBSafe($data["start_date"]) ?></td>
-                    <td><?= dataDBSafe($data["end_date"]) ?></td>
+                    <th scope="row"><?= textSafe($data["id"]) ?></th>
+                    <td class="table-list"><?= textSafe($data["title"]) ?></td>
+                    <td class="table-list"><?= textSafe($data["organisation"]) ?></td>
+                    <td class="table-list"><?= textSafe($data["description"]) ?></td>
+                    <td><?= textSafe($data["start_date"]) ?></td>
+                    <td><?= textSafe($data["end_date"]) ?></td>
                     <td><?php if ($today >= $data['start_date'] and $today <= $data['end_date']) {
                             echo "<span class='text-success'>En cours</span>";
                         } else if ($today < $data['start_date']) {

@@ -32,7 +32,7 @@ if (isset($search)) {
         <div class="container mt-5">
             <h1>Gestion des secteurs</h1>
             <?php if (isset($search) and $search != "") {
-                echo "<h2>Résultat de la recherche '" . dataDBSafe($search) . "'</h2>";
+                echo "<h2>Résultat de la recherche '" . textSafe($search) . "'</h2>";
             }
 
             searchInput($search, "sector.php", "sector.php");
@@ -57,7 +57,7 @@ if (isset($search)) {
                         <tr>
                             <th><?= $nbr_line ?></th>
                             <td> <!-- affichage du nom du secteur -->
-                                <?= dataDBSafe($l["name"]) ?>
+                                <?= textSafe($l["name"]) ?>
                             </td>
                             <td> <!-- option applicable au secteur enregistré dans la base de donnée-->
                                 <div class="btn-group">

@@ -47,7 +47,7 @@ if ($navbar){?>
                 <li class="nav-item">
                     <!-- TODO enlever le texte "test" et remettre la fonction php quand l'utilisateur devra forcément être connecté pour accéder aux pages admin-->
                     <p class="navbar-text fs-4 my-auto me-3"><span class="fad fa-user-circle"></span>
-                        <?php echo dataDBSafe($_SESSION['username']); ?></p>
+                        <?php echo textSafe($_SESSION['username']); ?></p>
                 </li>
                 <li class="nav-item mt-2">
                     <form action="../src/actions/logout.php" method="post">

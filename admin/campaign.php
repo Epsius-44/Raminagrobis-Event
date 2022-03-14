@@ -10,7 +10,7 @@ include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
 include_once "../src/actions/function.php";
 
-$sector_lines = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn); //liste des secteurs d'activités
+$beach = sqlCommand("SELECT * FROM sector ORDER BY name", [], $conn); //liste des secteurs d'activités
 if (isset($campaign_id) == true) {
     //modification d'une campagne
     $data = sqlCommand("SELECT * FROM form WHERE id = :campaign_id", [":campaign_id" => $campaign_id], $conn);
@@ -137,13 +137,13 @@ include "../src/layout/headerAdmin.php";
                         <?php
                         $item = 6;
                         echo "<div class='col-12 btn-group-vertical'>";
-                        for ($y = 0; $y <= intdiv(count($sector_lines), $item); $y++) {
+                        for ($y = 0; $y <= intdiv(count($beach), $item); $y++) {
                             echo "<div class='btn-group flex-wrap'>";
-                            $nbr_x = (count($sector_lines) - $y * $item >= $item) ? $item : count($sector_lines) - $y * $item;
+                            $nbr_x = (count($beach) - $y * $item >= $item) ? $item : count($beach) - $y * $item;
                             for ($x = 1; $x <= $nbr_x; $x++) {
-                                $value = $sector_lines[($x - 1) + $y * $item]["id"];
+                                $value = $beach[($x - 1) + $y * $item]["id"];
                                 $name = "checkbox_sector_" . $value;
-                                $sector_name = $sector_lines[($x - 1) + $y * $item]['name'];
+                                $sector_name = $beach[($x - 1) + $y * $item]['name'];
                                 $checked = (in_array($value, $sector_checked)) ? " checked" : "";
                                 echo "<input type='checkbox'
                                         class='group-checkbox btn-check'
